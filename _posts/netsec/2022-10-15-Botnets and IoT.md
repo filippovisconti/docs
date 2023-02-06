@@ -1,3 +1,10 @@
+---
+layout: post
+title: "Botnets and IoT"
+categories: network-security lecture-notes
+tags: network-security lecture-notes bot botnet iot security cnc
+---
+
 # Botnets and IoT
 
 ## Introduction

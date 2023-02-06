@@ -1,3 +1,10 @@
+---
+layout: post
+title: "Firewalls"
+categories: network-security lecture-notes
+tags: network-security lecture-notes firewalls ids ips
+---
+
 # Firewalls
 
 ## Introduction

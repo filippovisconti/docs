@@ -1,3 +1,10 @@
+---
+layout: post
+title: "BGP Security"
+categories: network-security lecture-notes
+tags: network-security lecture-notes bgp bgpsec rpki roa routing
+---
+
 # BGP Security
 
 Insecure ASes use legacy BGP, and secure ASes must accept legacy insecure routes

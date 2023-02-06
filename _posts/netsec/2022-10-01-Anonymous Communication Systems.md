@@ -1,3 +1,10 @@
+---
+layout: post
+title: "Anonymous Communication Systems"
+categories: network-security lecture-notes
+tags: network-security lecture-notes anonymity mixnets tor onion-routing
+---
+
 # Anonymous Communication Systems
 
 ## Introduction

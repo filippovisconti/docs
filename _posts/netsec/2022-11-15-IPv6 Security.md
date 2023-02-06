@@ -1,3 +1,10 @@
+---
+layout: post
+title: "IPv6"
+categories: network-security lecture-notes
+tags: network-security lecture-notes ip ipv6 dad eui64
+---
+
 # IPv6 Security
 
 ## Overview

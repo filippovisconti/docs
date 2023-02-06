@@ -1,3 +1,10 @@
+---
+layout: post
+title: "Virtual Private Networks"
+categories: network-security lecture-notes
+tags: network-security lecture-notes vpn encryption security 
+---
+
 # Virtual Private Networks
 
 ## Introduction

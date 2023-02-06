@@ -1,3 +1,10 @@
+---
+layout: post
+title: "SSL/TLS Public-Key Infrastructure"
+categories: network-security lecture-notes
+tags: network-security lecture-notes ssl tls pki crypto security ca certs
+---
+
 # SSL/TLS Public-Key Infrastructure
 
 ## Introduction

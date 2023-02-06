@@ -1,3 +1,10 @@
+---
+layout: post
+title: "Crypto refresher"
+categories: network-security lecture-notes
+tags: network-security lecture-notes crypto auth
+---
+
 # Crypto refresher
 
 **Secrecy vs Confidentiality**: keep data hidden from unintended receivers

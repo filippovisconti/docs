@@ -1,3 +1,10 @@
+---
+layout: post
+title: "DNS Security"
+categories: network-security lecture-notes
+tags: network-security lecture-notes DNS security DNSSEC dos reflection attacks
+---
+
 # DNS security
 
 ## Introduction
