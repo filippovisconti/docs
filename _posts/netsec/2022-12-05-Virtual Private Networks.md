@@ -39,7 +39,7 @@ Differently from TLS, VPNs protect all traffic (including e.g.: DNS requests). H
 
 Also, a VPN would not authenticate the web server - only the tunnel endpoint. A VPN server, without TLS’s encryption, would be able to read all the traffic in plaintext.
 
-![Screenshot 2023-01-09 at 11.42.56.png](Screenshot_2023-01-09_at_11.42.56.png)
+![Screenshot 2023-01-09 at 11.42.56.png](/assets/images/Anonymous/Screenshot_2023-01-09_at_11.42.56.png)
 
 ## Cons of using a VPN
 
@@ -60,8 +60,8 @@ VXLAN (virtual extensible LAN) combines features from both systems.
 
 # IPSec
 
-![Screenshot 2023-01-09 at 12.14.49.png](Screenshot_2023-01-09_at_12.14.49.png)
+![Screenshot 2023-01-09 at 12.14.49.png](/assets/images/Anonymous/Screenshot_2023-01-09_at_12.14.49.png)
 
-![Screenshot 2023-01-09 at 12.37.33.png](Screenshot_2023-01-09_at_12.37.33.png)
+![Screenshot 2023-01-09 at 12.37.33.png](/assets/images/Anonymous/Screenshot_2023-01-09_at_12.37.33.png)
 
-![Screenshot 2023-01-09 at 12.37.54.png](Screenshot_2023-01-09_at_12.37.54.png)
+![Screenshot 2023-01-09 at 12.37.54.png](/assets/images/Anonymous/Screenshot_2023-01-09_at_12.37.54.png)

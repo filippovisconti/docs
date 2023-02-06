@@ -1,16 +1,5 @@
 # Crypto refresher
 
-<aside>
-💡 Notes from the Information Security Course:
-
-[Summary.pdf](Summary.pdf)
-
-Lecture’s slides
-
-[01b-crypto-refresher.pdf](01b-crypto-refresher.pdf)
-
-</aside>
-
 **Secrecy vs Confidentiality**: keep data hidden from unintended receivers
 
 **Privacy**: keep data about a person secret.

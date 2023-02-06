@@ -94,7 +94,7 @@ Works for stateless protocols (e.g. UDP, ineffective for TCP). |
 | DETERMINISTIC | System always performs the same given the same input. The same stimuli always result in same action. Reason for alert is known. |
 | NON-DETERMINISTIC | System detection is fuzzy (heuristics, machine learning, sandboxing) and depends on current state of the world. Reason for alert typically not known. |
 
-![Screenshot 2023-01-10 at 22.32.14.png](Screenshot_2023-01-10_at_22.32.14.png)
+![Screenshot 2023-01-10 at 22.32.14.png](/assets/images/Firewalls/Screenshot_2023-01-10_at_22.32.14.png)
 
 ### Signature-based Detection
 
@@ -136,12 +136,12 @@ Golden rule: Data you are going to work on needs to come from approximately the 
 
 ## Types of attacks
 
-![Screenshot 2023-01-10 at 23.23.43.png](Screenshot_2023-01-10_at_23.23.43.png)
+![Screenshot 2023-01-10 at 23.23.43.png](/assets/images/Firewalls/Screenshot_2023-01-10_at_23.23.43.png)
 
-![Screenshot 2023-01-10 at 23.25.00.png](Screenshot_2023-01-10_at_23.25.00.png)
+![Screenshot 2023-01-10 at 23.25.00.png](/assets/images/Firewalls/Screenshot_2023-01-10_at_23.25.00.png)
 
 “It is better to be roughly right than precisely wrong.”
 
-![Screenshot 2023-01-10 at 23.33.45.png](Screenshot_2023-01-10_at_23.33.45.png)
+![Screenshot 2023-01-10 at 23.33.45.png](/assets/images/Firewalls/Screenshot_2023-01-10_at_23.33.45.png)
 
-![Screenshot 2023-01-10 at 23.34.08.png](Screenshot_2023-01-10_at_23.34.08.png)
+![Screenshot 2023-01-10 at 23.34.08.png](/assets/images/Firewalls/Screenshot_2023-01-10_at_23.34.08.png)

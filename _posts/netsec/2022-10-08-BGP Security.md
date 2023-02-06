@@ -25,9 +25,9 @@ Rerouting attacks undermine and invalidate other security protocols:
 
 </aside>
 
-![Screenshot 2023-01-10 at 12.17.52.png](Screenshot_2023-01-10_at_12.17.52.png)
+![Screenshot 2023-01-10 at 12.17.52.png](/assets/images/BGP/Screenshot_2023-01-10_at_12.17.52.png)
 
-![Screenshot 2023-01-10 at 12.21.27.png](Screenshot_2023-01-10_at_12.21.27.png)
+![Screenshot 2023-01-10 at 12.21.27.png](/assets/images/BGP/Screenshot_2023-01-10_at_12.21.27.png)
 
 Hijacked traffic can be blackholed (dropped), redirected or intercepted.
 
@@ -44,7 +44,7 @@ The Resource Public Key Infrastructure cryptographically asserts the cryptograph
 
 RPKI enables the issuance of Route Origination Authorisations. A ROA states which AS is authorised to announce certain IP prefixes. ROAs are signed, distributed and checked ***********out-of-band***********. Checking validity out-of-band allows to make no modification to BGP.
 
-![Screenshot 2023-01-10 at 18.06.10.png](Screenshot_2023-01-10_at_18.06.10.png)
+![Screenshot 2023-01-10 at 18.06.10.png](/assets/images/BGP/Screenshot_2023-01-10_at_18.06.10.png)
 
 ASes and RIRs create ROAs and upload them to repositories, which are periodically fetched by each AS, which will verify signatures for all entries based on RPKI and store them in trusted local caches.
 
@@ -55,7 +55,7 @@ When a BGP update message arrives, the router can check whether a ROA exists and
 <aside>
 ⚠️ Path prepending is still an issue.
 
-![Screenshot 2023-01-10 at 19.11.38.png](Screenshot_2023-01-10_at_19.11.38.png)
+![Screenshot 2023-01-10 at 19.11.38.png](/assets/images/BGP/Screenshot_2023-01-10_at_19.11.38.png)
 
 </aside>
 
@@ -63,7 +63,7 @@ When a BGP update message arrives, the router can check whether a ROA exists and
 
 The main idea is to secure the AS-PATH attribute in BGP announcements, preventing path prepending and poisoning, by signing received BGP messages to prove that the path was correctly updated. 
 
-![Screenshot 2023-01-10 at 19.25.56.png](Screenshot_2023-01-10_at_19.25.56.png)
+![Screenshot 2023-01-10 at 19.25.56.png](/assets/images/BGP/Screenshot_2023-01-10_at_19.25.56.png)
 
 Insecure ASes use legacy BGP, and secure ASes must accept legacy insecure routes
 Problem 1: routing policies can interact in ways that can cause BGP “wedgies”

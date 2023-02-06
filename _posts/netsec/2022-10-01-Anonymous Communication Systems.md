@@ -31,7 +31,7 @@ Since IP addresses still leak metadata information, there are use-cases where th
 
 Intended for sending anonymous emails (or other individual messages), where latency is not a big concern. No connection setup, only individual messages. This solution is built on asymmetric cryptography.  Each mix has a public/private key pair $K_i/K_{i-1}$. Public keys 𝐾 and addresses 𝐼 are known to the senders
 
-![Screenshot 2023-01-09 at 15.31.28.png](Screenshot_2023-01-09_at_15.31.28.png)
+![Screenshot 2023-01-09 at 15.31.28.png](/assets/images/Anonymous/Screenshot_2023-01-09_at_15.31.28.png)
 
 Problem: network attacker can observe in- and outgoing messages. 
 
@@ -47,7 +47,7 @@ Now it’s possible to be fully anonymous... as long as at least one mix is hone
 
 ### How to send replies
 
-![Screenshot 2023-01-09 at 16.10.34.png](Screenshot_2023-01-09_at_16.10.34.png)
+![Screenshot 2023-01-09 at 16.10.34.png](/assets/images/Anonymous/Screenshot_2023-01-09_at_16.10.34.png)
 
 ## Onion routing
 
@@ -62,7 +62,7 @@ reuse it for all packets in the flow using only symmetric key crypto
 
 The nodes are called relays (also nodes or routers). The virtual circuit is also called tunnel (especially if it is at layer 3)
 
-![Screenshot 2023-01-09 at 16.18.53.png](Screenshot_2023-01-09_at_16.18.53.png)
+![Screenshot 2023-01-09 at 16.18.53.png](/assets/images/Anonymous/Screenshot_2023-01-09_at_16.18.53.png)
 
 ## Lifecycle of a circuit
 
@@ -72,7 +72,7 @@ The nodes are called relays (also nodes or routers). The virtual circuit is also
     - The relays store the necessary state
     - Details
         
-        ![Screenshot 2023-01-09 at 22.30.48.png](Screenshot_2023-01-09_at_22.30.48.png)
+        ![Screenshot 2023-01-09 at 22.30.48.png](/assets/images/Anonymous/Screenshot_2023-01-09_at_22.30.48.png)
         
         Establish state on relays by using normal packets as for mixes. Messages for each node contain the address of the next node and ephemeral DH share. Each node replies with its own ephemeral DH share. Encryption of **setup** packet uses long-term **asymmetric** keys of relays.
         
@@ -81,7 +81,7 @@ The nodes are called relays (also nodes or routers). The virtual circuit is also
     - Only symmetric cryptography is used (AES)
     - Details
         
-        ![Screenshot 2023-01-09 at 22.33.14.png](Screenshot_2023-01-09_at_22.33.14.png)
+        ![Screenshot 2023-01-09 at 22.33.14.png](/assets/images/Anonymous/Screenshot_2023-01-09_at_22.33.14.png)
         
         The sender has established a circuit (symmetric keys and per-link IDs). Data packets are encrypted as usual (layered encryption). The ID of the next relay is added in clear text. 
         In order to protect against network adversaries, links can be encrypted (e.g.: using TLS)
@@ -103,7 +103,7 @@ If longterm keys are compromised, anonymity of previously established circuits i
 
 In order to obtain immediate forward security and prevent deanonymization, a technique called ************************telescopic circuit setup************************ can be used. 
 
-![Screenshot 2023-01-09 at 22.42.19.png](Screenshot_2023-01-09_at_22.42.19.png)
+![Screenshot 2023-01-09 at 22.42.19.png](/assets/images/Anonymous/Screenshot_2023-01-09_at_22.42.19.png)
 
 With this setup, which is slightly slower, keys are negotiated one relay at a time, and, thus, the circuit is extended one hop at a time. By doing this, ephemeral session keys are negotiated before the circuit is extended.
 
@@ -153,7 +153,7 @@ TOR also provides receiver anonymity, by not using DNS and having `.onion` URLs.
 
 Every cell is 512 bytes long and contains a ********************circuit ID******************** and a **************command field************** in cleartext. 
 
-![Screenshot 2023-01-10 at 11.24.55.png](Screenshot_2023-01-10_at_11.24.55.png)
+![Screenshot 2023-01-10 at 11.24.55.png](/assets/images/Anonymous/Screenshot_2023-01-10_at_11.24.55.png)
 
 A relay cell’s payload is decrypted and its digest is checked. If correct, this means the relay is the intended recipient of the cell) → check command.
 Otherwise, it is an intermediate node relaying the cell → replace circuit ID and forward cell along.

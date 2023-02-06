@@ -4,7 +4,7 @@
 
 DNS is fundamentally insecure. Despite being mission-critical for any online business, this component is often overlooked and forgotten — until something breaks. 
 
-![Screenshot 2023-01-11 at 13.56.15.png](Screenshot_2023-01-11_at_13.56.15.png)
+![Screenshot 2023-01-11 at 13.56.15.png](/assets/images/DNS/Screenshot_2023-01-11_at_13.56.15.png)
 
 DNS is a globally distributed, loosely coupled, scalable, reliable, and dynamic database. DNS data is maintained locally and retrievable globally.
 
@@ -20,7 +20,7 @@ DNS has no built-in encryption, integrity, nor authentication.
 - What could possibly go wrong?
     - Cache poisoning, replay & amplification, session state, dependencies, org structures, ..
 
-![Screenshot 2023-01-11 at 14.27.17.png](Screenshot_2023-01-11_at_14.27.17.png)
+![Screenshot 2023-01-11 at 14.27.17.png](/assets/images/DNS/Screenshot_2023-01-11_at_14.27.17.png)
 
 ### Common DNS attacks
 
@@ -44,21 +44,21 @@ The bandwidth of the root server operators (RSS) is significant, but not immune 
 
 ## Cache poisoning
 
-![Screenshot 2023-01-11 at 14.34.27.png](Screenshot_2023-01-11_at_14.34.27.png)
+![Screenshot 2023-01-11 at 14.34.27.png](/assets/images/DNS/Screenshot_2023-01-11_at_14.34.27.png)
 
-![Screenshot 2023-01-11 at 14.34.44.png](Screenshot_2023-01-11_at_14.34.44.png)
+![Screenshot 2023-01-11 at 14.34.44.png](/assets/images/DNS/Screenshot_2023-01-11_at_14.34.44.png)
 
 ### Flawed processing of *****************additional***************** section
 
-![Screenshot 2023-01-11 at 14.40.40.png](Screenshot_2023-01-11_at_14.40.40.png)
+![Screenshot 2023-01-11 at 14.40.40.png](/assets/images/DNS/Screenshot_2023-01-11_at_14.40.40.png)
 
 ### Guessing game 1
 
-![Screenshot 2023-01-11 at 14.41.33.png](Screenshot_2023-01-11_at_14.41.33.png)
+![Screenshot 2023-01-11 at 14.41.33.png](/assets/images/DNS/Screenshot_2023-01-11_at_14.41.33.png)
 
 ### Guessing game 2
 
-![Screenshot 2023-01-11 at 14.43.01.png](Screenshot_2023-01-11_at_14.43.01.png)
+![Screenshot 2023-01-11 at 14.43.01.png](/assets/images/DNS/Screenshot_2023-01-11_at_14.43.01.png)
 
 ### Cache Poisoning — SADDNS (2020)
 
@@ -75,7 +75,7 @@ The bandwidth of the root server operators (RSS) is significant, but not immune 
     - ICMP port unreachable message upon missing it
 - Once the source port number is known, the attacker simply injects a large number of spoofed DNS replies brute forcing the txid
 
-![Screenshot 2023-01-11 at 14.50.55.png](Screenshot_2023-01-11_at_14.50.55.png)
+![Screenshot 2023-01-11 at 14.50.55.png](/assets/images/DNS/Screenshot_2023-01-11_at_14.50.55.png)
 
 ## Compromised Registrar Configuration Attack
 
@@ -87,9 +87,9 @@ DNS information is as secure as the Web App, Registration Processes, or the pass
 
 Manipulate DNS configuration settings on internal network or local host and have target point to attacker’s name server.
 
-![Screenshot 2023-01-11 at 15.12.03.png](Screenshot_2023-01-11_at_15.12.03.png)
+![Screenshot 2023-01-11 at 15.12.03.png](/assets/images/DNS/Screenshot_2023-01-11_at_15.12.03.png)
 
-![Screenshot 2023-01-11 at 15.12.29.png](Screenshot_2023-01-11_at_15.12.29.png)
+![Screenshot 2023-01-11 at 15.12.29.png](/assets/images/DNS/Screenshot_2023-01-11_at_15.12.29.png)
 
 ## DNSSEC, DoH, DoT
 
@@ -102,6 +102,6 @@ It is designed to prevent DNS cache poisoning & other attacks. It does not encry
 
 Instead, DNS over TLS or HTTPS (**DoT & DoH**) do encrypt DNS queries.
 
-![Screenshot 2023-01-11 at 15.29.45.png](Screenshot_2023-01-11_at_15.29.45.png)
+![Screenshot 2023-01-11 at 15.29.45.png](/assets/images/DNS/Screenshot_2023-01-11_at_15.29.45.png)
 
-![Screenshot 2023-01-11 at 15.31.40.png](Screenshot_2023-01-11_at_15.31.40.png)
+![Screenshot 2023-01-11 at 15.31.40.png](/assets/images/DNS/Screenshot_2023-01-11_at_15.31.40.png)

@@ -8,7 +8,7 @@ The goal of TLS is to secure Internet communication, by requiring secrecy - to p
 
 A sample TLS 1.2 session uses a Diffie-Hellman key agreement, which is subject to MitM attacks.
 
-![Screenshot 2022-10-16 at 11.13.35.png](Screenshot_2022-10-16_at_11.13.35.png)
+![Screenshot 2022-10-16 at 11.13.35.png](/assets/images/PKI/Screenshot_2022-10-16_at_11.13.35.png)
 
 ## PKI Overview
 
@@ -163,9 +163,9 @@ Advantages: CT is fully operational today, with no change to domain’s web serv
 
 Disadvantages: **MitM attacks can still proceed, although they can be detected externally**; browsers still need to contact Log eventually to verify that certificate is listed in log; current CT does not support revocation; malicious log server can add bogus certificates; management of list of trusted log servers can introduce a kill switch.
 
-![Screenshot 2022-10-16 at 12.26.49.png](Screenshot_2022-10-16_at_12.26.49.png)
+![Screenshot 2022-10-16 at 12.26.49.png](/assets/images/PKI/Screenshot_2022-10-16_at_12.26.49.png)
 
-![Screenshot 2022-10-16 at 12.27.02.png](Screenshot_2022-10-16_at_12.27.02.png)
+![Screenshot 2022-10-16 at 12.27.02.png](/assets/images/PKI/Screenshot_2022-10-16_at_12.27.02.png)
 
 Auditors should check that SCTs are honoured (promised certificates are actually included in the log) and verify that the log is actually append-only.
 

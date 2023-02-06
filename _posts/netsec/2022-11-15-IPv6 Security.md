@@ -32,8 +32,8 @@ Simplified:
 
 </aside>
 
-![Screenshot 2023-01-12 at 16.42.40.png](Screenshot_2023-01-12_at_16.42.40.png)
+![Screenshot 2023-01-12 at 16.42.40.png](/assets/images/IPv6/Screenshot_2023-01-12_at_16.42.40.png)
 
-![Screenshot 2023-01-12 at 16.42.48.png](Screenshot_2023-01-12_at_16.42.48.png)
+![Screenshot 2023-01-12 at 16.42.48.png](/assets/images/IPv6/Screenshot_2023-01-12_at_16.42.48.png)
 
-![Screenshot 2023-01-12 at 16.43.06.png](Screenshot_2023-01-12_at_16.43.06.png)
+![Screenshot 2023-01-12 at 16.43.06.png](/assets/images/IPv6/Screenshot_2023-01-12_at_16.43.06.png)

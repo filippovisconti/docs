@@ -24,7 +24,7 @@ A botnet is the collection of all bot agents controlled by a bot-master, who is 
 
 Command&Control is the botnet management and communication system.
 
-![Screenshot 2023-01-11 at 11.29.04.png](Screenshot_2023-01-11_at_11.29.04.png)
+![Screenshot 2023-01-11 at 11.29.04.png](/assets/images/Botnets/Screenshot_2023-01-11_at_11.29.04.png)
 
 This architecture allows efficient, scalable, dynamic, and robust control of millions of machines with low risk of identification of the bot master.
 
@@ -55,11 +55,11 @@ graph TD
 	end
 ```
 
-![Screenshot 2023-01-11 at 11.47.58.png](Screenshot_2023-01-11_at_11.47.58.png)
+![Screenshot 2023-01-11 at 11.47.58.png](/assets/images/Botnets/Screenshot_2023-01-11_at_11.47.58.png)
 
-![Screenshot 2023-01-11 at 11.51.01.png](Screenshot_2023-01-11_at_11.51.01.png)
+![Screenshot 2023-01-11 at 11.51.01.png](/assets/images/Botnets/Screenshot_2023-01-11_at_11.51.01.png)
 
-![Screenshot 2023-01-11 at 11.51.14.png](Screenshot_2023-01-11_at_11.51.14.png)
+![Screenshot 2023-01-11 at 11.51.14.png](/assets/images/Botnets/Screenshot_2023-01-11_at_11.51.14.png)
 
 ## CnC Infrastructure Localisation
 
@@ -80,7 +80,7 @@ Domain flux generates list of “rendezvous” points that may be used by the bo
 Each bot independently computes a list of domain names using a Domain Generation Algorithm (DGA). These domain names are tried to connect to the command and control infrastructure.
 The list of domain names is periodically refreshed. Not all generated domains must be valid for the botnet to be operative. Only the bot master knows the sequence of generated domain names.
 
-![Screenshot 2023-01-11 at 12.04.44.png](Screenshot_2023-01-11_at_12.04.44.png)
+![Screenshot 2023-01-11 at 12.04.44.png](/assets/images/Botnets/Screenshot_2023-01-11_at_12.04.44.png)
 
 ## Botnet Defence
 
@@ -105,6 +105,6 @@ very source.
 
 ## IoT
 
-![Screenshot 2023-01-11 at 12.11.04.png](Screenshot_2023-01-11_at_12.11.04.png)
+![Screenshot 2023-01-11 at 12.11.04.png](/assets/images/Botnets/Screenshot_2023-01-11_at_12.11.04.png)
 
-![Screenshot 2023-01-11 at 12.20.34.png](Screenshot_2023-01-11_at_12.20.34.png)
+![Screenshot 2023-01-11 at 12.20.34.png](/assets/images/Botnets/Screenshot_2023-01-11_at_12.20.34.png)
