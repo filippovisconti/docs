@@ -5,7 +5,6 @@ order: 4
 
 layout: page
 title: "About Me"
-permalink: /about
 ---
 
 
