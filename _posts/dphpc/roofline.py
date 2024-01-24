@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 plt.style.use("ggplot")
 plt.figure(figsize=(13, 12))
-_, ax = plt.subplots(dpi=1200)
+_, ax = plt.subplots(dpi=00)
 # plt.grid(axis="x", color="#E5E5E5")
 plt.xscale("log", base=2)
 plt.yscale("log", base=2)
