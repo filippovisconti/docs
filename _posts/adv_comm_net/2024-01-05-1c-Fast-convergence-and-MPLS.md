@@ -321,38 +321,37 @@ The fundamental problem is that the dependency between BGP next hop and the IGP 
 
 Source sends information as self-contained packets that have an address.
 
-- Source may have to break up single message in multiple Each packet travels independently to the destination host.
-- Routers and switches use the address in the packet to determine how to forward the packets Destination recreates the message.
+- Source may have to break up single message in multiple
+- **Each** packet travels **independently** to the destination host.
+- Routers and switches use the **address** in the packet to determine **how** to forward the packets
+- Destination **recreates** the message.
 
-> Analogy: a letter in surface mail. ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.47.27.png)
+> Analogy: a letter in surface mail.
+> ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.47.27.png)
 
 ### Circuit Switching
 
-Source first establishes a connection (circuit) to the destination.
-
-- Each router or switch along the way may reserve some bandwidth for the data flow
-
-Source sends the data over the circuit.
-
-- No need to include the destination address with the data since the routers know the path
-
-The connection is torn down.
+1. Source first establishes a connection (circuit) to the destination.
+    - Each router or switch along the way may reserve some bandwidth for the data flow
+2. Source sends the data over the circuit.
+    - No need to include the destination address with the data since the routers know the path
+3. The connection is torn down.
 
 > Example: telephone network. ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.48.12.png)
 
-Traditional circuits: on each hop, the circuit has a dedicated wire or slice of bandwidth.
+Traditional circuits: on each hop, the circuit has a **dedicated** wire or slice of bandwidth.
 
-- Physical connection - clearly no need to include addresses with the data
+- **Physical** connection - clearly no need to include addresses with the data
 
 Advantages, relative to packet switching:
 
-- Implies guaranteed bandwidth, predictable performance
-- Simple switch design: only remembers connection information, no longest-prefix destination address look up
+- Implies **guaranteed** bandwidth, **predictable** performance
+- **Simple** switch design: only remembers connection information, no longest-prefix destination address look up
 
 Disadvantages:
 
-- Inefficient for bursty traffic (wastes bandwidth)
-- Delay associated with establishing a circuit
+- **Inefficient** for bursty traffic (wastes bandwidth)
+- **Delay** associated with establishing a circuit
 
 Can we get the advantages without (all) the disadvantages?
 
@@ -360,86 +359,90 @@ Can we get the advantages without (all) the disadvantages?
 
 Each wire carries many "virtual" circuits.
 
-- Forwarding based on virtual circuit (VC) identifier
+- Forwarding based on **virtual** circuit (VC) identifier
   - IP header: src, dst, etc.
   - Virtual circuit header: just "VC"
-- A path through the network is determined for each VC when the VC is established
-- Use statistical multiplexing for efficiency
+- A **path** through the network is **determined** for each VC when the VC is established
+- Use **statistical** multiplexing for efficiency
 
-Can support wide range of quality of service.
+It can support wide range of quality of service.
 
-- No guarantees: best effort service
-- Weak guarantees: delay < 300 msec, ...
-- Strong guarantees: e.g. equivalent of physical circuit
+- **No** guarantees: **best** effort service
+- **Weak** guarantees: delay < 300 msec, ...
+- **Strong** guarantees: e.g. equivalent of physical circuit
 
 ## IP meets virtual circuits - MPLS
 
-Core idea: forward according to labels in-between L2 & L3
+Core idea: **forward** according to **labels**, in-between L2 and L3
 
 - MPLS is often referred to as a layer 2.5 protocol
 
 ### Label swapping in a nutshell
 
-On packet arrival, the router analyses the input packet label.
-
+On packet **arrival**, the router **analyses** the input packet **label**.
 Using its label forwarding table, the router then decides:
 
-- Output packet label
-- Output interface ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.55.24.png)
+- Output packet **label**
+- Output **interface** ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.55.24.png){: width="50%"}
 
 ### Integrating label swapping and IP
 
-![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.55.47.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.55.47.png){: width="50%"}
 
-We need to solve three problems
+We need to solve $3$ problems
 
 1. What do we use as packet label?
    - Insert special 32 bits headers in front of the IP header
-   - ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.56.34.png)
-1. What is the behaviour of a LSR?
-1. What is the behaviour of an ingress LER?
+    ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.56.34.png){: width="50%"}
+1. What is the behavior of a LSR?
+1. What is the behavior of an ingress LER?
 
 #### Label Switch Router (LSR)
 
-MPLS data plane allows for three operations on a labelled packet:
+MPLS data plane allows for $3$ operations on a labelled packet:
 
-1. PUSH
+1. `PUSH`
    - insert a label in front of a received packet
-2. SWAP
+2. `SWAP`
    - change the value of the label of a received labelled packet
-3. POP
+3. `POP`
    - remove the label in front of a received labelled packet
 
 ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.05.02.png)
 
-LSRs forward traffic according to their label forwarding tables: ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.05.16.png)
+LSRs forward traffic according to their label forwarding tables:
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.05.16.png){: width="50%"}
 
-Label forwarding table: examples entries ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.05.35.png)
+Label forwarding table: examples entries
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.05.35.png){: width="50%"}
 
-A Label Switched Path (LSP) is a unidirectional tunnel between a pair of routers. LSP:
+A **Label Switched Path** (LSP) is a unidirectional **tunnel** between a **pair** of routers.
 
-- a path followed by a labelled packet over several hops starting at an ingress LER and ending at an egress LER
-- an LSP is required for any MPLS forwarding to occur
+LSP:
+
+- a path followed by a **labelled** packet over several hops starting at an ingress LER and ending at an egress LER
+- an LSP is **required** for any MPLS forwarding to occur
 
 ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.06.28.png)
 
 ### Label stacking helps to scale by introducing a LSP hierarchy
 
-How to support hierarchy of LSPs ?
+How to support hierarchy of LSPs?
 
 - it should be possible to place small LSPs inside large LSPs
-- ideally, there should be no predefined limit on the number of levels supported
+- ideally, there should be **no** predefined **limit** on the number of levels supported
 
-Solution adopted by MPLS
+Solution adopted by MPLS:
 
-- each labelled packet can carry a stack of labels![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.07.23.png)
+- each labelled packet can carry a stack of labels
+  ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.07.23.png){: width="50%"}
 - label at the top of the stack appears first in packet
   - `S=1` if the label is at the bottom of the stack
   - `S=0` if the label is not at the bottom of the stack
 
 ### MPLS and label stacks
 
-![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.08.13.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.08.13.png){: width="50%"}
 
 ### How does ingress Label Edge Router (LER) determine the label to push on an IP packet?
 
@@ -452,21 +455,25 @@ Principle:
        - All packets sent to the same BGP next hop
 2. Associate the same label to all the packets that belong to the same FEC
 
-![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.09.47.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.09.47.png){: width="50%"}
 
 ### Destination-based packet forwarding
 
-![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.10.31.png) How to provide transit service when:
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.10.31.png){: width="50%"}
 
-- Edge LERs are able to attach and remove labels
-- Edge LERs and Core LSRs run IP routing protocols and maintain IP routing tables
-- Core LSRs can only forward labelled packets
+How to provide transit service when:
+
+- Edge LERs are able to **attach** and rem**o**ve labels
+- Edge LERs and Core LSRs run **IP** routing protocols and maintain **IP** routing tables
+- Core LSRs can **only** forward **labelled** packets
 
 #### Manual solution
 
-Create full mesh of LSPs between all edge LSRs
+Create **full** mesh of LSPs between all edge LSRs
 
-![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.10.50.png) Problems to be solved:
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.10.50.png){: width="50%"}
+
+Problems to be solved:
 
 - $N$ edge LSRs $\rightarrow N(N-1)$ unidirectional LSPs
 - How to automate LSP establishment?
@@ -474,14 +481,14 @@ Create full mesh of LSPs between all edge LSRs
 
 #### How to automate LSP establishment?
 
-How to fill the label forwarding tables of all LSRs in a given network?
+How to **fill** the label forwarding tables of all LSRs in a given network?
 
-- Use a dedicated protocol to distribute FEC-label mappings
+- Use a **dedicated** protocol to **distribute** FEC-label **mappings**
   - LDP: Label Distribution Protocol
   - RSVP-TE: Resource Reservation Protocol—Traffic Engineering
-- Piggyback FEC-label mappings inside messages sent by existing routing protocols
-  - possible if routing protocol is extensible
-    - BGP can be easily modified to associate label with route
+- **Piggyback** FEC-label mappings **inside** messages sent by **existing** routing protocols
+  - **possible** **if** routing **protocol** is **extensible**
+    - BGP can be **easily** modified to associate label with route
 
 ### MPLS in large, IP-based ISP networks
 
