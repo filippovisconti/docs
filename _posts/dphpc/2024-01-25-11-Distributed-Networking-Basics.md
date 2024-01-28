@@ -99,7 +99,7 @@ Can we do better for given $α, β, P, s$?
 
 ### What is a simple lower bound on the broadcast time?
 
-$$T_{BC} \geq\min\{\lceil\log_2(P)\rceil\alpha,s\beta\}$$
+$$T_{BC} \geq\min(\lceil\log_2(P)\rceil\alpha,s\beta)$$
 
 How **close** are the **binomial** tree for **small** messages and the pipeline for large messages (approximately)?
 
@@ -170,7 +170,7 @@ Defined by 4 parameters:
 
 Models pipelining
 
-- $\frac L g$ messages can be “in flight”
+- $\frac L g$ messages can be "in flight"
 - Captures state of the art (cf. TCP windows)
 
 Models computation/communication overlap

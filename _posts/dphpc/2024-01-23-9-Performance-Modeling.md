@@ -74,7 +74,7 @@ Execution order $\xrightarrow{eo}$ is a total order (implies sequential executio
 
 - What about parallel execution?
 - What can run in parallel?
-  - “independent” program statements
+  - "independent" program statements
 
 ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2016.52.47.png)
 

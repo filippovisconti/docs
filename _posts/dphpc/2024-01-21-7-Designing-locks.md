@@ -101,7 +101,7 @@ Wait-free is a stronger condition which means that every thread is guaranteed to
 
 ## Concept: Consensus Number
 
-Each level of the hierarchy has a “consensus number” assigned.
+Each level of the hierarchy has a "consensus number" assigned.
 
 - It's the maximum number of threads for which primitives in level x can solve the consensus problem The consensus problem:
 - Has single function: decide(v)
@@ -147,7 +147,7 @@ Consensus needs to be wait-free: All threads finish after a finite number of ste
 
 Instead of proposing an integer, every thread now proposes either 0 or 1
 
-- Equivalent to “normal” consensus for two threads
+- Equivalent to "normal" consensus for two threads
 - How can we proof this?
 - If we have int_decide(int) as primitive, we can implement bin_decide(bit) and vice-versa ![shutup](/assets/img/ScreenShot%202024-01-07%20at%2012.54.46.png)
 
@@ -163,7 +163,7 @@ Instead of proposing an integer, every thread now proposes either 0 or 1
 
 In binary two-thread consensus, threads either decide zero (0) or one (1)
 
-- At some point during the execution (i.e., a state), each thread will “decide” what to return
+- At some point during the execution (i.e., a state), each thread will "decide" what to return
 - We call a state where a thread has decided on one 1-valent and a state where a thread has decided on zero 0-valent
 - Undecided states are called bivalent – decided states are called univalent
 

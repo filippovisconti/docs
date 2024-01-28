@@ -181,7 +181,7 @@ Simple first example: binary adder – $𝑠 = a + 𝑏$ ($n$-bit numbers)
 
 We only want 𝒔!
 
-- Requires $c_{in,1}, c_{in,2}, … , c_{in,n}$ though ![shutup](/assets/img/ScreenShot%202024-01-12%20at%2017.07.27.png)
+- Requires $c_{in,1}, c_{in,2}, ... , c_{in,n}$ though ![shutup](/assets/img/ScreenShot%202024-01-12%20at%2017.07.27.png)
 
 ## Prefix sums as magic bullet for other seemingly sequential algorithms
 

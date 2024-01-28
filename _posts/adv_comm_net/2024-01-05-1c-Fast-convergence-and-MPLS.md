@@ -4,19 +4,23 @@ title: Fast convergence - MPLS
 categories: adv-comm-net lecture-notes
 math: true
 ---
-# Introduction
 
-## What do we mean by network convergence?
+## Introduction
 
-> [!Info] Convergence Routing convergence is the transition from a routing AND forwarding state to another state.
+### What do we mean by network convergence?
 
-Convergence is typically triggered by a **change in the topology**, which can be either **sudden**, in the case of a failure, or **planned**, in the case of maintenance (hardware upgrades, firmware updates, config. changes).
+> Convergence Routing convergence is the transition from a routing AND forwarding state to another state.
+{: .prompt-info}
+
+Convergence is typically triggered by a **change in the topology**, which can be either **sudden**, in the case of a failure, or **planned**, in the case of maintenance (hardware upgrades, firmware
+updates, config. changes).
 
 Convergence is a distributed process, during which routers might have an inconsistent view of the network.
 
-## Why should we care?
+### Why should we care?
 
-> [!Error] Problem: inconsistency Transiently inconsistent routing and forwarding state can lead to **traffic loss**.
+> Problem: inconsistency Transiently inconsistent routing and forwarding state can lead to **traffic loss**.
+{: .prompt-danger}
 
 These losses happen because:
 
@@ -25,31 +29,32 @@ These losses happen because:
 2. the forwarding paths contain forwarding loops.
    - VERY annoying
 
-> Not all transient states lead to traffic losses. In practice, operators are mainly concerned about retrieving connectivity, not avoiding transient states. ![](/assets/img/ScreenShot%202024-01-13%20at%2016.07.23.png)
+> Not all transient states lead to traffic losses. In practice, operators are mainly concerned about retrieving connectivity, not avoiding transient states.
+> ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2016.07.23.png)
 
-## What composes the convergence time?
+### What composes the convergence time?
 
 There are 4 main sources of convergence delay:
 
-|                                                  |   |                              |    |                                       |
-| ------------------------------------------------ | - | ---------------------------- | -- | ------------------------------------- |
-| local                                            | 1 | detecting the failure        | t1 | takes O(milliseconds)                 |
-| global                                           | 2 | communicating the failure    | t2 | takes O(milliseconds)                 |
-| global                                           | 3 | recomputing forwarding state | t3 | takes O(milliseconds)                 |
-| global                                           | 4 | updating forwarding state    | t4 | takes O(# prefixes), can be very slow |
-| ![](/assets/img/ScreenShot%202024-01-13%20at%2016.09.57.png) |   |                              |    |                                       |
+|                                                              |   |                              |    |                                       |
+| ------------------------------------------------------------ | - | ---------------------------- | -- | ------------------------------------- |
+| local                                                        | 1 | detecting the failure        | t1 | takes O(milliseconds)                 |
+| global                                                       | 2 | communicating the failure    | t2 | takes O(milliseconds)                 |
+| global                                                       | 3 | recomputing forwarding state | t3 | takes O(milliseconds)                 |
+| global                                                       | 4 | updating forwarding state    | t4 | takes O(## prefixes), can be very slow |
 
-### Do failures happen that frequently?
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2016.09.57.png)
 
-Yep… especially in large networks ![](/assets/img/ScreenShot%202024-01-13%20at%2016.14.54.png)
+#### Do failures happen that frequently?
 
-# Fast convergence in IP networks
+Yep… especially in large networks ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2016.14.54.png)
 
-## Fast detection
+## Fast convergence in IP networks
 
->
-{: .prompt-info}
->
+### Fast detection
+
+{: .prompt-info} >
+
 > 1. Fast detection
 > 2. High accuracy
 > 3. Low overhead
@@ -59,7 +64,7 @@ Possible mechanisms:
 1. Rely on physical/link layer support
 2. Rely on "hello"/beacons
 
-### Rely on physical/link layer support
+#### Rely on physical/link layer support
 
 Some physical/link layers, such as optical layers, can detect failures through the loss of light, a carrier signal.
 
@@ -79,18 +84,19 @@ Cons:
 
 - Only works for some physical/link layers
   - e.g., not in Ethernet
-- Does not detect certain kinds of failures.![](/assets/img/ScreenShot%202024-01-13%20at%2016.21.54.png)
+- Does not detect certain kinds of failures.![shutup](/assets/img/ScreenShot%202024-01-13%20at%2016.21.54.png)
 
-### Rely on "hello"/beacons
+#### Rely on "hello"/beacons
 
-The idea here is to have adjacent routers regularly exchange "hellos" and signal a failure whenever $k$ of them are missed in a row. By default, each routing protocol comes with its own hello-based protocol. Each one allows the operator to configure:
+The idea here is to have adjacent routers regularly exchange "hellos" and signal a failure whenever $k$ of them are missed in a row. By default, each routing protocol comes with its own hello-based
+protocol. Each one allows the operator to configure:
 
 - the frequency at which hellos are generated
   - `hello interval`
 - the interval after which, not receiving a single hello, the protocol declares the peer dead
   - `dead interval`
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2016.28.24.png) Pros:
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2016.28.24.png) Pros:
 
 - Works on any router platform
 - Detects a wider range of failures because it actually tests the forwarding path.
@@ -102,9 +108,10 @@ Cons:
   - To decrease the detection time, one has to stress the control plane a lot.
   - This is incredibly wasteful as each protocol is basically doing the same thing without exchanging any info.
 
-### Bidirectional Forwarding Detection (BFD)
+#### Bidirectional Forwarding Detection (BFD)
 
-The modern way to solve these two problems is to rely on ONE protocol-agnostic hello-based service that can directly run on hardware. This service is known as Bidirectional Forwarding Detection. ![](/assets/img/ScreenShot%202024-01-13%20at%2016.32.17.png)
+The modern way to solve these two problems is to rely on ONE protocol-agnostic hello-based service that can directly run on hardware. This service is known as Bidirectional Forwarding Detection.
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2016.32.17.png)
 
 The hello interval can be as low as $50$ ms, with dead interval around $150$ ms
 
@@ -121,18 +128,19 @@ Cons:
 
 - Not all routers can run BFD in the hardware
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2016.35.43.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2016.35.43.png)
 
-## Fast propagation
+### Fast propagation
 
 This is pretty easy to solve. Essentially, we want two ensure two things:
 
 1. The flooding of the failure notification happens **immediately** after the detection.
 2. The flooded packets are sent with absolute priority over the rest of the traffic.
 
-> Note that for convergence to happen, not necessarily all routers need to hear about the failure.![](/assets/img/ScreenShot%202024-01-13%20at%2016.38.02.png) In the example above, "only" R3 and R4 need to be notified about the failure to retrieve connectivity towards R5. At the same time, "only" R1 and R5 need to be notified about the failure to retrieve connectivity towards R4.
+> Note that for convergence to happen, not necessarily all routers need to hear about the failure.![shutup](/assets/img/ScreenShot%202024-01-13%20at%2016.38.02.png) In the example above, "only" R3 and R4
+> need to be notified about the failure to retrieve connectivity towards R5. At the same time, "only" R1 and R5 need to be notified about the failure to retrieve connectivity towards R4.
 
-## Fast computation
+### Fast computation
 
 For shortest-path-based protocols such as OSPF, ISIS this is not a problem anymore:
 
@@ -145,15 +153,15 @@ For BGP, this still remains a problem:
 - the computation is done **per-prefix**
 - oftentimes, BGP routers do not even know an alternate path and literally need to "hunt" for it.
 
-### Example
+#### Example
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2016.46.56.png) Prior to the failure, all of the internal routers in AS1 only know one route to reach each of the 800k prefixes: via R4.
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2016.46.56.png) Prior to the failure, all of the internal routers in AS1 only know one route to reach each of the 800k prefixes: via R4.
 
 This is because R5 does not advertise its eBGP routes as they have a smaller local-preference.
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2016.48.10.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2016.48.10.png)
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2016.48.22.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2016.48.22.png)
 
 One way to avoid this problem is to force R5 to advertise its external routes, even if it does not choose them as best.
 
@@ -161,32 +169,32 @@ Multiple BGP extensions allow that. Of course, it comes at the cost of having in
 
 > The tradeoff between scalability and speed is rather typical in networking.
 
-## Fast updates
+### Fast updates
 
-Updating the Forwarding Information Base (FIB) is typically the key bottleneck to overcome in the convergence problem: $$ \text{Total Update Time} = \text{\# prefixes } \cdot \text{average update time per prefix}$$
+Updating the Forwarding Information Base (FIB) is typically the key bottleneck to overcome in the convergence problem: $$ \text{Total Update Time} = \text{\## prefixes } \cdot \text{average update time
+per prefix}$$
 
 On average, it sits in the order of 100s of $\mu s$:
 
 - for a full BGP table of around 800k prefixes: $$ 800.000*250\mu s=200s$$ >"Cheap trick": prioritise FIB Updates according to how much traffic each prefix sees.
 
->
-{: .prompt-info}
->
+{: .prompt-info} >
+
 > 1. Pre-compute the backup state
 > 2. Pre-load it in the reorganized FIB
 > 3. Activate the pre-loaded backup state upon detecting a failure IGP $\rightarrow$ Loop-Free Alternates (LFA) BGP $\rightarrow$ Prefix-Independent Convergence (PIC)
 
-### Loop-free Alternates
+#### Loop-free Alternates
 
 > [!Tip] Intuition A LFA is a neighbour for which you know that you can deviate the traffic impacted by a given failure and that traffic will not come back to you.
 
-#### Example
+##### Example
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2017.13.57.png) R3 is a LFA of R1 for the failure of $R1\rightarrow R2$ since R3 does not use R1 to reach R2.
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2017.13.57.png) R3 is a LFA of R1 for the failure of $R1\rightarrow R2$ since R3 does not use R1 to reach R2.
 
 > [!info] Definition A neighbour N can provide a loop-free alternate to S for a destination/prefix $d$ if and only if $$MinDistance(N,d) < MinDistance(N,S) + MinDistance(S,d)$$
 
-#### How to compute link-protecting LFA on a router X
+##### How to compute link-protecting LFA on a router X
 
 > link-protecting LFA: direct neighbours which provide LFAs for all destinations whose next-hop goes over a given link
 
@@ -204,7 +212,7 @@ For all links (X,R):
 
 One can easily extend this algorithm to compute per-prefix LFA. Take a look at this topology:
 
-- ![](/assets/img/ScreenShot%202024-01-13%20at%2017.18.28.png)
+- ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2017.18.28.png)
 
 - R2 is not a per-link LFA for R1 as R2 uses R1 to reach prefix 2.
 - But, R1 is a per-prefix LFA for R1 for prefix 1.
@@ -213,11 +221,12 @@ One can easily extend this algorithm to compute per-prefix LFA. Take a look at t
 - Some design patterns, such as triangles, lead to high coverage.
 - Also, $coverage(perlinkLFA)\leq coverage(perprefixLFA)$
 
-In practice, LFA coverage is highly topology-dependent ![](/assets/img/ScreenShot%202024-01-13%20at%2017.22.59.png)
+In practice, LFA coverage is highly topology-dependent ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2017.22.59.png)
 
-#### Increasing LFA's coverage with Remote LFAs
+##### Increasing LFA's coverage with Remote LFAs
 
-Let's look at another example, a ring-based network: ![](/assets/img/ScreenShot%202024-01-13%20at%2017.23.58.png) In this topology, R1 does not have a per-link nor a per-prefix LFA to R6, because R3 uses R1 to reach R6 in the pre-convergence state.
+Let's look at another example, a ring-based network: ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2017.23.58.png) In this topology, R1 does not have a per-link nor a per-prefix LFA to R6, because R3
+uses R1 to reach R6 in the pre-convergence state.
 
 Remote LFAs enable to increase the LFA coverage by allowing a router to use remote, non neighbouring routers as repair nodes by tunnelling to them (using IP-based tunnels or MPLS).
 
@@ -227,7 +236,7 @@ While R3 uses R1 to reach R6, it does not use R1 to reach R5.
 
 By encapsulating its R6-directed traffic to R5 and sending that encapsulated traffic to R3, R1 can retrieve connectivity.
 
-#### How do we compute remote LFAs?
+##### How do we compute remote LFAs?
 
 Given $D_{opt}(a,b)$, a function that returns the shortest-path distance between a and b,
 
@@ -239,44 +248,44 @@ Given $D_{opt}(a,b)$, a function that returns the shortest-path distance between
   - Let `candidates_RLFA=P && Q`
   - Return `candidates_RLFA`
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2017.31.02.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2017.31.02.png)
 
 (R)LFA gives us a simple condition a route can check locally to know to which neighbour it can safely redirect traffic to. The next question now becomes:
 
 - How do we organize the FIB to allow for a fast archiviation of the backup state?
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2017.32.40.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2017.32.40.png)
 
-### Prefix-independent Convergence
+#### Prefix-independent Convergence
 
 Goal: enable routers to quickly switch over to pre-installed alternate paths upon failures that affect BGP routes
 
 > Make BGP as fast to converge as IGP
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2017.35.10.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2017.35.10.png)
 
 Upon the failure of (R1,R2) link, R1 has to perform 800k updates to its FIB...
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2017.35.25.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2017.35.25.png)
 
 The fundamental problem is that the dependency between BGP next hop and the IGP one is NOT maintained in the FIB. It is flattened.
 
-> [!success] Solution Maintain the hierarchy between BGP next-hops and IGP next-hops in the FIB as well. (easy to implement in P4) ![](/assets/img/ScreenShot%202024-01-13%20at%2018.45.42.png)
+> [!success] Solution Maintain the hierarchy between BGP next-hops and IGP next-hops in the FIB as well. (easy to implement in P4) ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.45.42.png)
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2018.45.55.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.45.55.png)
 
-# Intro to MPLS
+## Intro to MPLS
 
-## Packet Switching
+### Packet Switching
 
 Source sends information as self-contained packets that have an address.
 
 - Source may have to break up single message in multiple Each packet travels independently to the destination host.
 - Routers and switches use the address in the packet to determine how to forward the packets Destination recreates the message.
 
-> Analogy: a letter in surface mail. ![](/assets/img/ScreenShot%202024-01-13%20at%2018.47.27.png)
+> Analogy: a letter in surface mail. ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.47.27.png)
 
-## Circuit Switching
+### Circuit Switching
 
 Source first establishes a connection (circuit) to the destination.
 
@@ -288,7 +297,7 @@ Source sends the data over the circuit.
 
 The connection is torn down.
 
-> Example: telephone network. ![](/assets/img/ScreenShot%202024-01-13%20at%2018.48.12.png)
+> Example: telephone network. ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.48.12.png)
 
 Traditional circuits: on each hop, the circuit has a dedicated wire or slice of bandwidth.
 
@@ -306,50 +315,50 @@ Disadvantages:
 
 Can we get the advantages without (all) the disadvantages?
 
-## Virtual Circuits
+### Virtual Circuits
 
-Each wire carries many “virtual” circuits.
+Each wire carries many "virtual" circuits.
 
 - Forwarding based on virtual circuit (VC) identifier
   - IP header: src, dst, etc.
-  - Virtual circuit header: just “VC”
+  - Virtual circuit header: just "VC"
 - A path through the network is determined for each VC when the VC is established
 - Use statistical multiplexing for efficiency
 
 Can support wide range of quality of service.
 
 - No guarantees: best effort service
-- Weak guarantees: delay < 300 msec, …
+- Weak guarantees: delay < 300 msec, ...
 - Strong guarantees: e.g. equivalent of physical circuit
 
-# IP meets virtual circuits - MPLS
+## IP meets virtual circuits - MPLS
 
 Core idea: forward according to labels in-between L2 & L3
 
 - MPLS is often referred to as a layer 2.5 protocol
 
-## Label swapping in a nutshell
+### Label swapping in a nutshell
 
 On packet arrival, the router analyses the input packet label.
 
 Using its label forwarding table, the router then decides:
 
 - Output packet label
-- Output interface ![](/assets/img/ScreenShot%202024-01-13%20at%2018.55.24.png)
+- Output interface ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.55.24.png)
 
-## Integrating label swapping and IP
+### Integrating label swapping and IP
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2018.55.47.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.55.47.png)
 
 We need to solve three problems
 
 1. What do we use as packet label?
    - Insert special 32 bits headers in front of the IP header
-   - ![](/assets/img/ScreenShot%202024-01-13%20at%2018.56.34.png)
+   - ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2018.56.34.png)
 1. What is the behaviour of a LSR?
 1. What is the behaviour of an ingress LER?
 
-### Label Switch Router (LSR)
+#### Label Switch Router (LSR)
 
 MPLS data plane allows for three operations on a labelled packet:
 
@@ -360,20 +369,20 @@ MPLS data plane allows for three operations on a labelled packet:
 3. POP
    - remove the label in front of a received labelled packet
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2019.05.02.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.05.02.png)
 
-LSRs forward traffic according to their label forwarding tables: ![](/assets/img/ScreenShot%202024-01-13%20at%2019.05.16.png)
+LSRs forward traffic according to their label forwarding tables: ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.05.16.png)
 
-Label forwarding table: examples entries ![](/assets/img/ScreenShot%202024-01-13%20at%2019.05.35.png)
+Label forwarding table: examples entries ![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.05.35.png)
 
 A Label Switched Path (LSP) is a unidirectional tunnel between a pair of routers. LSP:
 
 - a path followed by a labelled packet over several hops starting at an ingress LER and ending at an egress LER
 - an LSP is required for any MPLS forwarding to occur
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2019.06.28.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.06.28.png)
 
-## Label stacking helps to scale by introducing a LSP hierarchy
+### Label stacking helps to scale by introducing a LSP hierarchy
 
 How to support hierarchy of LSPs ?
 
@@ -382,16 +391,16 @@ How to support hierarchy of LSPs ?
 
 Solution adopted by MPLS
 
-- each labelled packet can carry a stack of labels![](/assets/img/ScreenShot%202024-01-13%20at%2019.07.23.png)
+- each labelled packet can carry a stack of labels![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.07.23.png)
 - label at the top of the stack appears first in packet
   - `S=1` if the label is at the bottom of the stack
   - `S=0` if the label is not at the bottom of the stack
 
-## MPLS and label stacks
+### MPLS and label stacks
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2019.08.13.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.08.13.png)
 
-## How does ingress Label Edge Router (LER) determine the label to push on an IP packet?
+### How does ingress Label Edge Router (LER) determine the label to push on an IP packet?
 
 Principle:
 
@@ -402,27 +411,27 @@ Principle:
        - All packets sent to the same BGP next hop
 2. Associate the same label to all the packets that belong to the same FEC
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2019.09.47.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.09.47.png)
 
-## Destination-based packet forwarding
+### Destination-based packet forwarding
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2019.10.31.png) How to provide transit service when:
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.10.31.png) How to provide transit service when:
 
 - Edge LERs are able to attach and remove labels
 - Edge LERs and Core LSRs run IP routing protocols and maintain IP routing tables
 - Core LSRs can only forward labelled packets
 
-### Manual solution
+#### Manual solution
 
 Create full mesh of LSPs between all edge LSRs
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2019.10.50.png) Problems to be solved:
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.10.50.png) Problems to be solved:
 
 - $N$ edge LSRs $\rightarrow N(N-1)$ unidirectional LSPs
 - How to automate LSP establishment?
 - How to reduce the number of required LSPs?
 
-### How to automate LSP establishment?
+#### How to automate LSP establishment?
 
 How to fill the label forwarding tables of all LSRs in a given network?
 
@@ -433,7 +442,7 @@ How to fill the label forwarding tables of all LSRs in a given network?
   - possible if routing protocol is extensible
     - BGP can be easily modified to associate label with route
 
-## MPLS in large, IP-based ISP networks
+### MPLS in large, IP-based ISP networks
 
 - eBGP on border routers
   - current full BGP Internet routing table
@@ -442,13 +451,13 @@ How to fill the label forwarding tables of all LSRs in a given network?
   - 4 border, 3 core routers
     - 24 iBGP sessions
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2019.15.16.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.15.16.png)
 
-## MPLS enables to build BGP-free backbones
+### MPLS enables to build BGP-free backbones
 
 Backbone router
 
 - Maintains internal routing tables + label forwarding table
   - only knows how to reach routers inside ISP
 
-![](/assets/img/ScreenShot%202024-01-13%20at%2019.17.48.png)
+![shutup](/assets/img/ScreenShot%202024-01-13%20at%2019.17.48.png)

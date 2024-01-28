@@ -5,14 +5,14 @@ categories: adv-comm-net lecture-notes
 math: true
 ---
 
-I want you to question the assumptions behind TCP.
-math: true
+I want you to question the assumptions behind TCP. math: true
 
 1. Assumption: We can find the optimal sending rate over several RTTs.
 2. Doubt: In the modern internet, we often send only small requests.
 3. Question: Do we even have enough time to ramp up?
 
-Oscillations in TCP occur over the course of many RTTs. How big do our requests need to be for that to be realistic? On a 1Gbit/s link with 10ms RTT, we could send up to 1.25MB in a single RTT. ![](/assets/img/Pasted%20image%2020240116211921.png) ![](/assets/img/Pasted%20image%2020240116211929.png)
+Oscillations in TCP occur over the course of many RTTs. How big do our requests need to be for that to be realistic? On a 1Gbit/s link with 10ms RTT, we could send up to 1.25MB in a single RTT.
+![shutup](/assets/img/Pasted%20image%2020240116211921.png) ![shutup](/assets/img/Pasted%20image%2020240116211929.png)
 
 Study of a campus network in 2021 90% of flows are smaller than 1kB.
 
@@ -22,7 +22,7 @@ Study of a campus network in 2021 90% of flows are smaller than 1kB.
 2. Doubt: In the modern internet, we send many small requests.
 3. Question: Do we even have enough time to be fair? Often, we don’t!
 
-# Congestion Control Design
+## Congestion Control Design
 
 - Observation Space
   - What do we measure?
@@ -35,18 +35,18 @@ Observations are intrinsically linked to our model of the network. The model als
 
 Observations let us estimate the model state >not observable → difficult to model without making assumptions >not modelled → no point in observing
 
-The TCP network model is simple and consists of three states. We observe packet loss via duplicate ACKs and timeouts. ![](/assets/img/Pasted%20image%2020240116212343.png)
+The TCP network model is simple and consists of three states. We observe packet loss via duplicate ACKs and timeouts. ![shutup](/assets/img/Pasted%20image%2020240116212343.png)
 
-TCP RENO/CUBIC are relatively model-free algorithms: ![](/assets/img/Pasted%20image%2020240116212708.png)
+TCP RENO/CUBIC are relatively model-free algorithms: ![shutup](/assets/img/Pasted%20image%2020240116212708.png)
 
-TCP RENO and CUBIC misinterpret signals: all loss is caused attributed to congestion, even if it is just random. ![](/assets/img/Pasted%20image%2020240116212730.png)
+TCP RENO and CUBIC misinterpret signals: all loss is caused attributed to congestion, even if it is just random. ![shutup](/assets/img/Pasted%20image%2020240116212730.png)
 
 TCP RENO and CUBIC miss signals: What about delay? Only full queues drop packets (mostly) -> TCP needs to fill queues to work!
 
 We have a two-fold problem.
 
 1. Delay problem #1: A full queue delays congestion signals.
-2. Delay problem #2: A full queue increases RTT. Rule of thumb around 2000 [source] “buffer 250ms of incoming traffic” Packets spend 2.5s in the buffer!
+2. Delay problem #2: A full queue increases RTT. Rule of thumb around 2000 [source] "buffer 250ms of incoming traffic" Packets spend 2.5s in the buffer!
 
 This is a problem for
 
@@ -56,9 +56,9 @@ This is a problem for
 
 > This problem even got it’s own name: Bufferbloat
 
-# Where do we improve congestion control?
+## Where do we improve congestion control?
 
-## In the Internet?
+### In the Internet?
 
 - Limit queue size
 - Active Queue Management (AQM)
@@ -79,7 +79,7 @@ Fundamentally, there are three things to observe:
 1. Packet loss
    - observable
    - easy to model
-   - when we get the signal, its already “too late”
+   - when we get the signal, its already "too late"
 1. Packet delay
    - observable, but noisy
    - difficult to model, as there are many possibilities for delay (network? receiver? ...)
@@ -87,7 +87,7 @@ Fundamentally, there are three things to observe:
    - not fully observable,
    - difficult to model, we only know our own packets. What are other applications going to sent?
 
-## On your device?
+### On your device?
 
 - Additional observations
 - More complex models
@@ -97,7 +97,7 @@ Challenges:
 - Not everything of interest is (easily) observable
 - The Internet is hard to model
 
-## Should we combine both?
+### Should we combine both?
 
 The network and congestion control algorithms can cooperate.
 
@@ -112,7 +112,7 @@ Challenges:
 Explicit Congestion Notification (ECN):
 
 - The network sets an ECN flag in the IP header when queues are getting close to full (configurable threshold)
-- Last two bits in the “traffic class” IP header field.
+- Last two bits in the "traffic class" IP header field.
 - Congestion control treats ECN like a packet loss, but before any packet actually got dropped!
 - Used by Data Center TCP (DCTCP)
 - Network uses P4 to measure and share in-flight packets, link rate, and queue length with congestion control algorithms.
@@ -121,37 +121,37 @@ Explicit Congestion Notification (ECN):
 
 > [!summary] Summary: just loss as congestion signal isn’t great, but the alternatives are no silver bullets.
 
-# Control Space
+## Control Space
 
 A congestion control algorithm needs to decide when to send the next packet to optimize rate and/or latency.
 
 > Rate: how much data do we transmit successfully? Latency: how quickly do individual packets arrive?
 
->
-{: .prompt-danger}
->
+{: .prompt-danger} >
+
 > - Easy to implement.
 > - We mostly only need to act after an ACK has arrived.
 > - Update `cwnd`, send new packet if free space.
 > - Aside from that, we need coarse-grained timeouts.
 > - Default timeout is 200ms, does not need precise clocks!
 
-The `cwnd` causes TCP connections to consist of microbursts. ![](/assets/img/Pasted%20image%2020240116213733.png)
+The `cwnd` causes TCP connections to consist of microbursts. ![shutup](/assets/img/Pasted%20image%2020240116213733.png)
 
-If multiple bursts co-incide, we may overload queues! >Instead of sending cwnd-sized bursts, we can use pacing. >The pacing rate determines the time between packets: >![](/assets/img/Pasted%20image%2020240116213813.png)
+If multiple bursts co-incide, we may overload queues! >Instead of sending cwnd-sized bursts, we can use pacing. >The pacing rate determines the time between packets:
+>![shutup](/assets/img/Pasted%20image%2020240116213813.png)
 
 - Results in smooth traffic, at the cost of computational overhead.
   - Up to 10% of networking CPU cycles!
 - Requires precise timers (or hardware support), which is not a big issue nowadays
 
-# Bottleneck Bandwidth and Round-trip propagation time (BBR)
+## Bottleneck Bandwidth and Round-trip propagation time (BBR)
 
 BBR is a congestion control algorithm developed by Google in 2016.
 
 - Available for both TCP and QUIC.
 - Current version (2023): BBRv3
 - BBR builds a model of the network.
-- BBR is a great example for different observation and control, as we’ll discuss in the following. ![](/assets/img/Pasted%20image%2020240116214413.png)
+- BBR is a great example for different observation and control, as we’ll discuss in the following. ![shutup](/assets/img/Pasted%20image%2020240116214413.png)
 
 As the name implies, BBR models the network by considering the RTT and bottleneck bandwidth.
 
@@ -160,11 +160,11 @@ The model:
 - `BtlBw` is the bottleneck bandwidth, i.e., the minimum rate on the path, and `RTprop` is the RTT.
 - It does not matter how many links come before or after the bottleneck, as they faster by definition.
 
-![](/assets/img/Pasted%20image%2020240116214655.png) ![](/assets/img/Pasted%20image%2020240116214922.png)
+![shutup](/assets/img/Pasted%20image%2020240116214655.png) ![shutup](/assets/img/Pasted%20image%2020240116214922.png)
 
 Why do we measure those two values? Let’s have a look at our optimization goal.
 
-![](/assets/img/Pasted%20image%2020240116214954.png)
+![shutup](/assets/img/Pasted%20image%2020240116214954.png)
 
 BRR controls both a congestion window and a pacing rate to maximise bandwidth while minimising latency and losses.
 
@@ -187,29 +187,30 @@ There’s a small issue. What happens if we do not send enough?
   - BBR probes for a higher BtlBw
 - Afterwards, it reduces its pacing for a second RTT to compensate for the overhead.
 
-## Summary
+### Summary
 
 BBR is an algorithm that models the bottleneck queue, measuring RTT and bandwidth, controlling pacing and cwnd.
 
 - BBR models the queue beyond
-  - “drop → queue full” like RENO and CUBIC.
+  - "drop → queue full" like RENO and CUBIC.
 - This allows to maximise throughput at the same time as minimising latency and loss.
 - It is widely deployed at Google, and they report significant reduction in retransmissions (12%), resulting in a slight improvement in latency (0.2%).
-  - 12% fewer retransmissions means 12% more network capacity for “real” traffic!
+  - 12% fewer retransmissions means 12% more network capacity for "real" traffic!
 
-# Application Layer
+## Application Layer
 
 Applications on the Internet have many different needs. A one-size-fits-all transport cannot be optimal.
 
-Compare a download that only needs throughput with a VoIP call that mostly cares about latency! Some applications build their own control logic on top of congestion control. ![](/assets/img/Pasted%20image%2020240116215645.png)
+Compare a download that only needs throughput with a VoIP call that mostly cares about latency! Some applications build their own control logic on top of congestion control.
+![shutup](/assets/img/Pasted%20image%2020240116215645.png)
 
 1. Assumption: Multiple flows should share bandwidth fairly.
 2. Doubt: Sending data is only part of an application’s work.
 3. Question: Does fair bandwidth sharing imply fair completion times?
    - Not necessarily!
 
-![](/assets/img/Pasted%20image%2020240116215755.png)
+![shutup](/assets/img/Pasted%20image%2020240116215755.png)
 
 What's going on? Many applications not only communicate, but also wait/compute.
 
-> A bit of unfairness can help to un-synchronize them. ![](/assets/img/Pasted%20image%2020240116215824.png)
+> A bit of unfairness can help to un-synchronize them. ![shutup](/assets/img/Pasted%20image%2020240116215824.png)

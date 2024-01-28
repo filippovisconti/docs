@@ -7,7 +7,7 @@ math: true
 
 # Network Architecture Topologies
 
-HPC uses a lot of components (caches, processors, servers, …) which need to communicate
+HPC uses a lot of components (caches, processors, servers, ...) which need to communicate
 
 - This is done using networks
 - In this lecture we want to look at fundamentals of networks
@@ -87,7 +87,7 @@ Any source-destination pair can communicate at any time. However, it's very expe
 
 A crossbar switch connects $N$ inputs to $M$ outputs
 
-- At each crosspoint a switch/transistor is either “open” or connects the input to the output line ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2010.38.11.png)
+- At each crosspoint a switch/transistor is either "open" or connects the input to the output line ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2010.38.11.png)
 
 > It's **cheaper** than fully connected network: $O(N+M)$ cables vs $O(N*M)$.
 >
@@ -139,7 +139,7 @@ In theory, bisection bandwidth tells us the **worst-case** maximum throughput
 
 - If half of the nodes are senders, half of the nodes are receivers, what is the minimum transfer rate we can achieve?
 
-Why ”in theory”?
+Why "in theory"?
 
 - Remember Ethernet's spanning tree protocol?
 - Routing / Flow-control are completely ignored!
@@ -175,7 +175,7 @@ A path (or route) in a network is an ordered set of channels (edges in graph lin
 
 ### Diameter
 
-> The **diameter** of a network is the largest hop count of the minimal paths for all source-destination pairs. The diameter gives us an indication of the “worst case” _latency_!
+> The **diameter** of a network is the largest hop count of the minimal paths for all source-destination pairs. The diameter gives us an indication of the "worst case" _latency_!
 {: .prompt-tip}
 
 ![Diameter](/assets/img/ScreenShot%202024-01-08%20at%2011.16.17.png)
@@ -232,7 +232,7 @@ For ease construction: _edges are unidirectional_, data only flows from left to 
 
 - In reality, source and destination are colocated, we give them the same number.
 
-For wiring, label each switch port with an $n$-digit radix-$k$ number $\{d_{n−1}, d_{n−2}, \dots , d_0\}$ where $d_0$ denotes the port number on the switch, the other digits identify the switch in this stage.
+For wiring, label each switch port with an $n$-digit radix-$k$ number $(d_{n−1}, d_{n−2}, \dots , d_0)$ where $d_0$ denotes the port number on the switch, the other digits identify the switch in this stage.
 
 When going from stage $i − 1$ to stage $i$, flip $d_i$ and $d_0$. Wiring of terminals is trivial.
 
@@ -291,12 +291,12 @@ The diameter is 4, 2 (within the switch network) + 2 for the two links towards t
 
 ### Fat Tree
 
-Idea: Build a tree, make the links at the top ”fatter” – but how do we build this using switches with a fixed radix?
+Idea: Build a tree, make the links at the top "fatter" – but how do we build this using switches with a fixed radix?
 
 - Multiple ways to do this, we show the `k-ary-n-tree` variant
 - $N=k^n$ Terminals, each identified by a $n$ digit number ${0, 1, \dots , k − 1}^n$
-- $nk^{n−1}$ Switches, each switch identified by a pair $<w,l>$, where $w ∈ \{0, 1, … k − 1\}^{ n−1}$ and $l ∈ \{0, 1, … , n − 1\}$
-- There is an edge between a switch $< w_0, … w_{n−2}, n − 1 >$ and terminal $p_0, . . , p_{n−1}$ iff $w_i = p_i$ $\forall i \in \{0, … , n − 2\}$
+- $nk^{n−1}$ Switches, each switch identified by a pair $<w,l>$, where $w ∈ (0, 1, ... k − 1)^{ n−1}$ and $l ∈ (0, 1, ... , n − 1)$
+- There is an edge between a switch $< w_0, ... w_{n−2}, n − 1 >$ and terminal $p_0, . . , p_{n−1}$ iff $w_i = p_i$ $\forall i \in (0, ... , n − 2)$
 - Two switches are connected iff $l = l’ + 1$ and $w_i = w_i'$ $\forall i \neq l$
 
 ![Fat tree](/assets/img/ScreenShot%202024-01-08%20at%2012.21.01.png)
@@ -395,7 +395,7 @@ Instead of making routing decisions in switches, we can add the path of a messag
 
 ### Store and Forward
 
-Split message into packets (or flits), send one hop, store, send next hop, … ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2012.30.57.png)
+Split message into packets (or flits), send one hop, store, send next hop, ... ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2012.30.57.png)
 
 ### Cut-Through Flow-Control
 
@@ -406,7 +406,7 @@ Send flits in a pipelined fashion, still allocate buffer for entire packet at ea
 Similar to cut-through, but allocate space for single flit – much more efficient.
 
 - Packets from different src/dst pairs can now interleave
-- Switch must remember routing decision of header flit! -> We also allocate “channel state”!
+- Switch must remember routing decision of header flit! -> We also allocate "channel state"!
 - Can lead to head-of-line blocking, deadlocks!
 
 ## Resource Allocation

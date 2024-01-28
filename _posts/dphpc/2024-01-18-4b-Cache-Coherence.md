@@ -90,7 +90,7 @@ Programmer can hardly deal with unpredictable behavior!
 ### Snooping
 
 - Shared bus or (broadcast) network
-- Cache controller “snoops” all transactions
+- Cache controller "snoops" all transactions
 - Monitors and changes the state of the cache’s data
 - Works at small scale, challenging at large-scale
 
@@ -165,7 +165,7 @@ Implicit assumption: shared lines are accessed often
 
 Hybrid forms are possible!
 
-## MESI Cache Coherence aka. “Illinois protocol”
+## MESI Cache Coherence aka. "Illinois protocol"
 
 MESI is a cache coherence protocol used in multiprocessor systems to maintain consistency among caches. The name MESI is an acronym that stands for the four possible states that a cache line can be
 in:
@@ -245,7 +245,7 @@ The MESI protocol operates based on a set of rules that govern state transitions
   - Memory is stale, cache supplies copy (reply to `BusRd*`)
 - Owner (O): Modified Shared
   - **Exclusive** right to make changes
-  - Other S copies may exist (“dirty sharing”)
+  - Other S copies may exist ("dirty sharing")
   - Memory is stale, cache supplies copy (reply to `BusRd*`)
 - Exclusive (E):
   - Same as MESI
@@ -268,7 +268,7 @@ Same as MESI, but adds:
 
 ## Multi-level caches
 
-Most systems have multi-level caches. >Problem: only “last level cache” is connected to bus or network
+Most systems have multi-level caches. >Problem: only "last level cache" is connected to bus or network
 
 - Snoop requests are relevant for inner-levels of cache (L1)
 - Modifications of L1 data may not be visible at L2 (and thus the bus)
@@ -280,7 +280,7 @@ L1/L2 modifications:
 - On `BusRdX(*)` send invalidations to L1
 - Everything else can be handled in L2
 
-If L1 is write through, L2 could “remember” state of L1 cache line -- May increase traffic though
+If L1 is write through, L2 could "remember" state of L1 cache line -- May increase traffic though
 
 ## Directory-based cache coherence
 
@@ -295,7 +295,7 @@ Directory-based schemes are more scalable
 - Directory (entry for each CL) keeps track of all owning caches
 - Point-to-point update to involved processors
   - No broadcast
-  - Can use specialized (high-bandwidth) network, e.g., HT, QPI …
+  - Can use specialized (high-bandwidth) network, e.g., HT, QPI ...
 
 ### Basic Scheme
 

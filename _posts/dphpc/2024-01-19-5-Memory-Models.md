@@ -7,7 +7,7 @@ math: true
 
 ## Memory Models
 
-Need to define what it means to “read a location” and “to write a location” and the respective ordering!
+Need to define what it means to "read a location" and "to write a location" and the respective ordering!
 
 - What values should be seen by a processor
 
@@ -15,7 +15,7 @@ First thought: extend the abstractions seen by a sequential processor:
 
 - Compiler and hardware maintain data and control dependencies at all levels: ![shutup](/assets/img/ScreenShot%202024-01-05%20at%2019.17.24.png)
 
-> A read returns the value last written to the same location “last” is determined by program order!
+> A read returns the value last written to the same location "last" is determined by program order!
 {: .prompt-info}
 
 | Program order                                                                    | Visibility order                                            |
@@ -42,11 +42,11 @@ It applies to all layers!
 
 ![shutup](/assets/img/ScreenShot%202024-01-05%20at%2019.22.17.png)
 
-> ***Original definition***: “The result of any execution is the same as if the operations of all the processes were executed in some sequential order and the operations of each individual process appear in
-> this sequence in the order specified by its program” (Lamport, 1979)
+> ***Original definition***: "The result of any execution is the same as if the operations of all the processes were executed in some sequential order and the operations of each individual process appear in
+> this sequence in the order specified by its program" (Lamport, 1979)
 >
 > 1. A load L from memory location A issued by processor Pi obtains the value of the previous store to A by Pi, unless another processor has to stored a value to A in between
-> 2. A load L from memory location A obtains the value of a store S to A by another processor Pk if S and L are “sufficiently separated in time” and if no other store occurred between S and L
+> 2. A load L from memory location A obtains the value of a store S to A by another processor Pk if S and L are "sufficiently separated in time" and if no other store occurred between S and L
 > 3. Stores to the same location are serialized (defined as in (2))
 {: .prompt-info}
 
@@ -109,27 +109,27 @@ Reads can bypass previous writes for faster completion
 
 ## The 8 x86 Principles
 
-1. “Reads are not reordered with other reads.” (R→R)
-2. “Writes are not reordered with other writes.” (W→W)
+1. "Reads are not reordered with other reads." (R→R)
+2. "Writes are not reordered with other writes." (W→W)
    - ![shutup](/assets/img/ScreenShot%202024-01-05%20at%2021.50.37.png)
    - Yes, it is allowed
-3. “Writes are not reordered with older reads.” (R→W)
+3. "Writes are not reordered with older reads." (R→W)
    - ![shutup](/assets/img/ScreenShot%202024-01-05%20at%2021.50.57.png)
    - No
    - Yes
-4. “Reads may be reordered with older writes to different locations but not with older writes to the same location.” (NO W→R!)
+4. "Reads may be reordered with older writes to different locations but not with older writes to the same location." (NO W→R!)
    - ![shutup](/assets/img/ScreenShot%202024-01-05%20at%2021.52.18.png)
    - Yes
-5. “In a multiprocessor system, memory ordering obeys causality.“ (memory ordering respects transitive visibility)
+5. "In a multiprocessor system, memory ordering obeys causality." (memory ordering respects transitive visibility)
    - ![shutup](/assets/img/ScreenShot%202024-01-05%20at%2021.53.20.png)
    - Yes
-6. “In a multiprocessor system, writes to the same location have a total order.” (implied by cache coherence)
+6. "In a multiprocessor system, writes to the same location have a total order." (implied by cache coherence)
    - ![shutup](/assets/img/ScreenShot%202024-01-05%20at%2021.54.21.png)
    - Yes
-7. “In a multiprocessor system, locked instructions have a total order.“ (enables synchronized programming!)
+7. "In a multiprocessor system, locked instructions have a total order." (enables synchronized programming!)
    - ![shutup](/assets/img/ScreenShot%202024-01-05%20at%2021.54.48.png)
    - Yes
-8. “Reads and writes are not reordered with locked instructions. “ (enables synchronized programming!)
+8. "Reads and writes are not reordered with locked instructions. " (enables synchronized programming!)
    - ![shutup](/assets/img/ScreenShot%202024-01-05%20at%2021.55.25.png)
    - Yes
 
@@ -165,7 +165,7 @@ Not guaranteed unless by:
 
 - Synchronization
 - Volatile/atomic variables
-- Specialized functions/classes (e.g., java.util.concurrent, …) ![shutup](/assets/img/ScreenShot%202024-01-06%20at%2019.22.08.png)
+- Specialized functions/classes (e.g., java.util.concurrent, ...) ![shutup](/assets/img/ScreenShot%202024-01-06%20at%2019.22.08.png)
 
 ### Locks synchronize threads and memory
 
@@ -215,7 +215,7 @@ Read from a synchronization variable
 
 Two memory accesses conflict if they can happen at the same time (in happens-before) and one of them is a write (store)
 
-Such a code is said to have a “race condition”
+Such a code is said to have a "race condition"
 
 - Also data-race
 

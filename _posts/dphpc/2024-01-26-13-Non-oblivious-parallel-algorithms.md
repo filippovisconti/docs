@@ -60,8 +60,8 @@ Assuming picking a maximum $I$ is free, what are **work** and **depth**?
 #### How to pick the independent set 𝑰?
 
 - That’s now the whole trick!
-- It’s **simple** if all linked values are **consecutive** in an array – same as “standard” reduction!
-  - There, we “compute” (know?) independent sets up-front!
+- It’s **simple** if all linked values are **consecutive** in an array – same as "standard" reduction!
+  - There, we "compute" (know?) independent sets up-front!
 
 Irregular linked list though?
 
