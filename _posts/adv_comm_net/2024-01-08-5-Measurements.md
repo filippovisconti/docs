@@ -136,7 +136,7 @@ There are two common strategies to implement a set:
 | output                        | Deterministic | Probabilistic |
 | number of required operations | Probabilistic | Deterministic |
 
-#### Separate-chaining
+### Separate-chaining
 
 ![shutup](/assets/img/Pasted%20image%2020240116121641.png) With N elements and M cells, we'll have a list size of $\frac N M$ in average, and of $N$ in the worst-case.
 
