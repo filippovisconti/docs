@@ -365,7 +365,7 @@ In all regular networks, we can use their construction rule to also determine a 
 
 ### Valiant Routing (A Non-deterministic Oblivious Routing Scheme)
 
-Solves the problem of link-underutilisation by choosing a random intermediate destination
+Solves the problem of link-underutilization by choosing a random intermediate destination
 
 - At the cost of network bandwidth and latency ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2012.29.03.png)
 
