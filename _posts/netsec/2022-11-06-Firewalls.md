@@ -13,18 +13,16 @@ A firewall is a system used to protect or separate a trusted network from an unt
 
 Firewalls enforce an access control policy between two networks Inside / Intranet.
 
-Network firewalls protect different network segments.
-Host firewalls protect single hosts.
+Network firewalls protect different network segments. Host firewalls protect single hosts.
 
-| INGRESS | Filter incoming traffic from a low security to a high security net |
-| --- | --- |
-| EGRESS | Filter incoming traffic from a high security to a low security net |
-| DEFAULT POLICY | Defines what to do when no rule matches (ACCEPT or DENY ALL) |
+| INGRESS        | Filter incoming traffic from a low security to a high security net |
+| -------------- | ------------------------------------------------------------------ |
+| EGRESS         | Filter incoming traffic from a high security to a low security net |
+| DEFAULT POLICY | Defines what to do when no rule matches (ACCEPT or DENY ALL)       |
 
 ## Stateless firewalls
 
-These firewalls examine a packet at the network layer
-and the decision based on packet header information, such as  IP, port, flags.
+These firewalls examine a packet at the network layer and the decision based on packet header information, such as IP, port, flags.
 
 Pros:
 
@@ -68,7 +66,7 @@ Cons:
 
 These firewalls protect web-based applications from malicious requests.
 
-They use request patterns (signatures) to detect SQL injections, XSS, buffer overflow attempts, etc…
+They use request patterns (signatures) to detect SQL injections, XSS, buffer overflow attempts, etc...
 
 They also offer user authentication and session management.
 
@@ -80,34 +78,24 @@ Protecting large number of hosts, endpoints and network segments is not trivial.
 
 ## Attack techniques
 
-| IP SOURCE SPOOFING | Spoofing the source IP address to bypass filters
-Works for stateless protocols (e.g. UDP, ineffective for TCP). |
-| --- | --- |
-| ARTIFICIAL FRAGMENTATION | Fragment packets to bypass rules. Without proper reassembly at the firewall the attack gets through. |
-| VULNERABILITIES | Exploiting vulnerabilities in firewall software / firmware / OS. Exploit vulnerabilities in target application. |
-| DENIAL OF SERVICE | Firewall state explosion → defaults to fallback policy.
- |
-| TUNNELING/COVERT CHANNELS | Data in ICMP ping packets, or use DNS requests as channel. Attack through VPN virtual private network. |
-| PAYLOAD ENCODING | Different encodings or mappings confuse detection |
+| IP SOURCE SPOOFING | Spoofing the source IP address to bypass filters Works for stateless protocols (e.g. UDP, ineffective for TCP). | | --- | --- | | ARTIFICIAL FRAGMENTATION | Fragment packets to
+bypass rules. Without proper reassembly at the firewall the attack gets through. | | VULNERABILITIES | Exploiting vulnerabilities in firewall software / firmware / OS. Exploit vulnerabilities in
+target application. | | DENIAL OF SERVICE | Firewall state explosion → defaults to fallback policy. | | TUNNELING/COVERT CHANNELS | Data in ICMP ping packets, or use DNS requests as channel. Attack
+through VPN virtual private network. | | PAYLOAD ENCODING | Different encodings or mappings confuse detection |
 
 ## Attack detection
 
-| REACTIVE | System can only detect already known attacks
- |
-| --- | --- |
-| PROACTIVE | System can detect known and new, yet unknown attacks
+| REACTIVE | System can only detect already known attacks | | --- | --- | | PROACTIVE | System can detect known and new, yet unknown attacks
 
- |
-| DETERMINISTIC | System always performs the same given the same input. The same stimuli always result in same action. Reason for alert is known. |
-| NON-DETERMINISTIC | System detection is fuzzy (heuristics, machine learning, sandboxing) and depends on current state of the world. Reason for alert typically not known. |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | | DETERMINISTIC | System
+always performs the same given the same input. The same stimuli always result in same action. Reason for alert is known. | | NON-DETERMINISTIC | System detection is fuzzy (heuristics, machine
+learning, sandboxing) and depends on current state of the world. Reason for alert typically not known. |
 
 ![Screenshot 2023-01-10 at 22.32.14.png](/assets/images/Firewalls/Screenshot_2023-01-10_at_22.32.14.png)
 
 ### Signature-based Detection
 
-Exists in practically all detection and protection technologies
-and it is by far the fastest and most efficient way of categorising a data artifact.
-It has a boolean output: known good and known bad.
+Exists in practically all detection and protection technologies and it is by far the fastest and most efficient way of categorising a data artifact. It has a boolean output: known good and known bad.
 
 Pros:
 
@@ -123,8 +111,8 @@ Cons:
 
 ### Sandboxing-based Detection
 
-Sandboxing products typically run a samples in a (instrumented) sandbox environment
-It examines / monitors the runtime behaviour of sample (e.g. malware) and it compares the behaviour against a list or rules previously developed by the vendor in their lab or it applies machine learning for behaviour classification.
+Sandboxing products typically run a samples in a (instrumented) sandbox environment It examines / monitors the runtime behaviour of sample (e.g. malware) and it compares the behaviour against a list
+or rules previously developed by the vendor in their lab or it applies machine learning for behaviour classification.
 
 Pros:
 
@@ -147,7 +135,7 @@ Golden rule: Data you are going to work on needs to come from approximately the 
 
 ![Screenshot 2023-01-10 at 23.25.00.png](/assets/images/Firewalls/Screenshot_2023-01-10_at_23.25.00.png)
 
-“It is better to be roughly right than precisely wrong.”
+"It is better to be roughly right than precisely wrong."
 
 ![Screenshot 2023-01-10 at 23.33.45.png](/assets/images/Firewalls/Screenshot_2023-01-10_at_23.33.45.png)
 

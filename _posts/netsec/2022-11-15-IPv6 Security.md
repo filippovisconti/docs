@@ -20,19 +20,16 @@ Typical network sizes:
 Types of addresses:
 
 - Link local
-    - fe80::/10 — typically /64
+  - fe80::/10 — typically /64
 - Global Unique Address
-    - globally reachable
-    - the “normal” IPv6 address
+  - globally reachable
+  - the "normal" IPv6 address
 - Unique Local Address
-    - For local deployments
-    - Can be NAT’ed to GUA
+  - For local deployments
+  - Can be NAT’ed to GUA
 
-Nodes assign themselves an IPv6 address, after receiving the prefix from the router through a Router Advertisement (RA), and use **DAD** (duplicate address detection, RFC3484, RFC4429).
-Simplified:
-▶ "Does anybody have this IPv6 address?"
-▶ (no answer)
-▶ Great, I take it
+Nodes assign themselves an IPv6 address, after receiving the prefix from the router through a Router Advertisement (RA), and use **DAD** (duplicate address detection, RFC3484, RFC4429). Simplified: ▶
+"Does anybody have this IPv6 address?" ▶ (no answer) ▶ Great, I take it
 
 <aside>
 ❗ Easy Denial of Service (DoS) attack: Answer "Yes I have" to every DAD request
