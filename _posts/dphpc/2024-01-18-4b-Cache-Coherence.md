@@ -7,77 +7,73 @@ math: true
 
 
 
-> Cache coherence is a fundamental concept in computer architecture, particularly in systems with multiple processors or cores that share access to a common memory. In a multi-processor system, each
-> processor often has its own cache memory to store frequently used data for faster access. Cache coherence ensures that all processors observe a consistent view of memory, despite the presence of
+> Cache **coherence** is a **fundamental** concept in computer **architecture**, particularly in systems with **multiple** processors or **cores** that **share** access to a **common** **memory**. In a multi-processor system, **each**
+> **processor** often has its **own** **cache** memory to store frequently used data for faster access. Cache **coherence** **ensures** that **all** processors observe a **consistent** **view** of memory, despite the presence of
 > individual caches.
 >
-> The need for cache coherence arises because each processor can have a local copy of a portion of the main memory in its cache. When one processor updates or modifies its local copy, other processors
-> should be made aware of this change to maintain a consistent and correct view of the shared memory.
+> The need for cache coherence arises because **each** processor **can** have a **local** copy of a **portion** of the main memory in its cache. When **one** processor **updates** or modifies its local copy, **other** processors
+> **should** be **made** **aware** of this **change** to maintain a consistent and correct view of the shared memory.
 
-Different caches (in different cores) may have a copy of the same memory location!
-
-- Which one is valid after local updates?
+- **Which one** is valid after local updates?
   - Cache coherence manages the existence of multiple copies
 
-## Exclusive Hierarchical Caches
-
-![shutup](/assets/img/ScreenShot%202024-01-06%20at%2012.09.01.png)
-
-## Shared Hierarchical Caches
-
-![shutup](/assets/img/ScreenShot%202024-01-06%20at%2012.09.35.png)
-
-## Shared Hierarchical Caches with MT
-
-![shutup](/assets/img/ScreenShot%202024-01-06%20at%2012.09.55.png)
+| Exclusive Hierarchical Caches|Shared Hierarchical Caches|Shared Hierarchical Caches with MT|
+|--|--|--|
+|![shutup](/assets/img/ScreenShot%202024-01-06%20at%2012.09.01.png)|![shutup](/assets/img/ScreenShot%202024-01-06%20at%2012.09.35.png)|![shutup](/assets/img/ScreenShot%202024-01-06%20at%2012.09.55.png)|
 
 ## Cache coherence requirements
 
-A memory system is coherent if it guarantees the following:
+A **memory system** is **coherent** if it **guarantees** the following:
 
-- Write propagation (updates are eventually visible to all readers)
-- Write serialization (writes to the same location must be observed in order)
-  - Everything else: memory model issues (later)
+- Write **propagation** (updates are eventually visible to all readers)
+- Write **serialization** (writes to the same location must be observed in order)
+
+Everything else: memory model issues.
 
 ## Write-through Cache
 
-1. CPU0 reads `X` from memory
+1. CPU0 **reads** `X` from memory
    - loads `X=0` into its cache
-2. CPU1 reads `X` from memory
+2. CPU1 **reads** `X` from memory
    - loads `X=0` into its cache
-3. CPU0 writes `X=1`
+3. CPU0 **writes** `X=1`
    - stores `X=1` in its cache
    - stores `X=1` in memory
-4. CPU1 reads `X` from its cache
+4. CPU1 **reads** `X` from its cache
    - loads X=0 from its cache
-   ![Incoherent value for X on CPU1](/assets/img/ScreenShot%202024-01-06%20at%2012.11.33.png)
-   - CPU1 may wait for update!
-Requires write propagation!
+   - CPU1 **may** **wait** for update!
+
+![shutup](/assets/img/ScreenShot%202024-01-06%20at%2012.11.33.png){:  width="50%"}
+
+> Requires write **propagation**!
+{: .prompt-warning }
 
 ## Write-back Cache
 
-1. CPU0 reads X from memory
-   - loads X=0 into its cache
-2. CPU1 reads X from memory
-   - loads X=0 into its cache
-3. CPU0 writes X=1
-   - stores X=1 in its cache
-4. CPU1 writes X =2
-   - stores X=2 in its cache
-5. CPU1 writes back cache line
-   - stores X=2 in in memory
-6. CPU0 writes back cache line
-   - stores X=1 in memory
+1. CPU0 **reads** `X` from memory
+   - loads `X=0` into its cache
+2. CPU1 **reads** `X` from memory
+   - loads `X=0` into its cache
+3. CPU0 **writes** `X=1`
+   - stores `X=1` in its cache
+4. CPU1 **writes** `X =2`
+   - stores `X=2` in its cache
+5. CPU1 **writes** back cache line
+   - stores `X=2` in in memory
+6. CPU0 **writes** back cache line
+   - stores `X=1` in memory
 
-> Later store X=2 from CPU1 lost Requires write serialization!
+> **Later** **store** `X=2` from CPU1 **lost**
+>
+> Requires write **serialization**!
 {: .prompt-warning }
 
 ## Cache coherence protocols
 
-Programmer can hardly deal with unpredictable behavior!
+Programmer can **hardly** deal with **unpredictable** **behavior**!
 
-- Cache controller maintains data integrity
-- All writes to different locations are visible
+- **Cache** **controller** maintains data **integrity**
+- **All** **writes** to different locations are **visible**
 
 > - Shared bus or (broadcast) network
 >
@@ -89,17 +85,17 @@ Programmer can hardly deal with unpredictable behavior!
 
 ### Snooping
 
-- Shared bus or (broadcast) network
-- Cache controller "snoops" all transactions
+- **Shared** bus or (broadcast) network
+- Cache **controller** "snoops" all transactions
 - Monitors and changes the state of the cache’s data
-- Works at small scale, challenging at large-scale
+- Works at **small** scale, challenging at large-scale
 
 ### Directory-based
 
 - Record information necessary to maintain coherence
   - e.g., owner and state of a line etc.
 - Central/Distributed directory for cache line ownership
-- Scalable but more complex/expensive
+- **Scalable** but more complex/expensive
   - e.g., Intel Xeon Phi KNC
 
 ## Cache Coherence Parameters
@@ -113,47 +109,47 @@ Concerns/Goals
 
 ## Issues
 
-- Detection
-  - when does a controller need to act?
-- Enforcement
-  - how does a controller guarantee coherence?
-- Precision of block sharing (per block, per sub-block?)
-- Block size
+- **Detection**
+  - **when** does a controller need to act?
+- **Enforcement**
+  - **how** does a controller guarantee coherence?
+- **Precision** of block sharing (per block, per sub-block?)
+- Block **size**
   - cache line size?
 
 ### Problem 1: Stale reads
 
-Cache 1 holds value that was already modified in cache 2.
+Cache 1 **holds** value that was **already** modified in cache 2.
 
-> - Disallow this state
-> - Invalidate all remote copies before allowing a write to complete
+> - **Disallow** this state
+> - **Invalidate** all remote copies before allowing a write to complete
 {: .prompt-tip}
 
 ### Problem 2: Lost update
 
-Incorrect write back of modified line writes main memory in different order from the order of the write operations or overwrites neighboring data
+**Incorrect** write back of modified line writes main memory in different order from the order of the write operations or overwrites neighboring data
 
 > ***Solution***:
 >
-> Disallow more than one modified copy
+> Disallow **more than one** modified copy
 {: .prompt-tip}
 
 ## Invalidation vs. update
 
 ### Invalidation-based
 
-- On each write of a shared line, it has to invalidate copies in remote caches
+- On **each** write of a shared line, it has to **invalidate** copies in **remote** caches
 - Simple implementation for bus-based systems:
   - Each cache snoops
   - Invalidate lines written by other CPUs
   - Signal sharing for cache lines in local cache to other caches
-- Only write misses hit the bus (works with write-back caches)
-- Subsequent writes to the same cache line are local
+- **Only** write **misses** hit the bus (works with write-back caches)
+- **Subsequent** writes to the **same** cache line are **local**
   - → Good for multiple local writes to the same line (in the same cache)
 
 ### Update-based
 
-- Local write updates copies in remote caches
+- **Local** write updates copies in **remote** caches
   - Can update all CPUs at once
   - Multiple writes cause multiple updates (more traffic)
 - All sharers continue to hit cache line after one core writes
@@ -268,7 +264,11 @@ Same as MESI, but adds:
 
 ## Multi-level caches
 
-Most systems have multi-level caches. >Problem: only "last level cache" is connected to bus or network
+Most systems have multi-level caches.
+> **Problem**:
+>
+> only "last level cache" is connected to bus or network
+{: .prompt-warning}
 
 - Snoop requests are relevant for inner-levels of cache (L1)
 - Modifications of L1 data may not be visible at L2 (and thus the bus)
@@ -284,11 +284,12 @@ If L1 is write through, L2 could "remember" state of L1 cache line -- May increa
 
 ## Directory-based cache coherence
 
-Snooping does not scale
+Snooping does **not** scale
 
-- Bus transactions must be globally visible
-- Implies broadcast Typical solution: tree-based (hierarchical) snooping
-- Root becomes a bottleneck
+- Bus transactions must be **globally** visible
+- Implies broadcast
+  - Typical solution: tree-based (hierarchical) snooping
+- **Root** becomes a **bottleneck**
 
 Directory-based schemes are more scalable
 
@@ -302,15 +303,41 @@ Directory-based schemes are more scalable
 System with N processors Pi For each memory block (size: cache line) maintain a directory entry
 
 - N presence bits
-- Set if block in cache of Pi
+  - Set if block in cache of Pi
 - 1 dirty bit
 
-![shutup](/assets/img/ScreenShot%202024-01-06%20at%2015.03.09.png)
+![shutup](/assets/img/ScreenShot%202024-01-06%20at%2015.03.09.png){: w="50%"}
 
 ### Read miss
 
-![shutup](/assets/img/ScreenShot%202024-01-06%20at%2015.13.15.png)
+$P_i$ intends to read, but misses.
+
+If **dirty** bit in the directory is **off**:
+1. Read from main memory
+2. Set `presence[i]`
+3. Supply data to reader
+
+If **dirty** bit is **on**:
+1. Recall cache line from $P_j$ (determined by `presence[]`)
+2. Update memory
+3. Unset dirty bit, block shared
+4. Set `presence[i]`
+5. Supply data to reader
 
 ### Write miss
 
-![shutup](/assets/img/ScreenShot%202024-01-06%20at%2015.13.24.png)
+If **dirty** bit in the directory is **off**:
+1. Send invalidations to all processors $P_j$ with `presence[j] = 1`
+2. Unset presence bit for all processors
+3. Set dirty bit
+4. Set `presence[k]`, owner $P_i$
+
+If **dirty** bit is **on**:
+1. Recall cache line from owner $P_j$ (determined by `presence[]`)
+2. Update memory
+3. Unset `presence[j]`
+4. Set `presence[i]`
+   - Dirty bit remains set
+5. Supply data to writer
+
+

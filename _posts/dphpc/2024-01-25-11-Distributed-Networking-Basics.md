@@ -16,7 +16,7 @@ Effective bandwidth of a transfer:
 
 - $E(𝑠) = 𝑠 / 𝑇(𝑠)$
 
-As s increases, the effective bandwidth approaches $1/𝛽$ asymptotically
+As $s$ increases, the effective bandwidth approaches $1/𝛽$ asymptotically
 
 - Convergence rate depends on α
 - $𝑠_{1/2} = 𝛼/𝛽$
@@ -30,16 +30,16 @@ Assuming **no** pipelining (new messages can only be **issued** from a process *
 
 $𝑠_{1/2} = 𝛼/𝛽$ is often used to **distinguish** **bandwidth**- and **latency**-**bound** **messages**
 
-- $𝑠_{1/2} $ is in the order of kilobytes on real systems ![shutup](/assets/img/ScreenShot%202024-01-11%20at%2017.19.49.png)
+- $𝑠_{1/2} $ is in the order of kilobytes on real systems
+![shutup](/assets/img/ScreenShot%202024-01-11%20at%2017.19.49.png){: w="50%"}
 
 ### Example: simplest linear broadcast
 
 - One process has a data item to be distributed to all processes
 
-> Linearly broadcasting $s$ bytes among $P$ processes:
+> **Linearly broadcasting** $s$ bytes among $P$ processes:
 >
 > $$ 𝑇 (𝑠) = (P − 1) ⋅ (𝛼 + 𝛽𝑠) = O(P)$$
->
 {: .prompt-tip}
 
 ### k-ary Tree Broadcast
@@ -77,7 +77,7 @@ What is the optimal $k$ here?
 
 Can we broadcast faster than in a k-nomial tree?
 
-- $O(log P)$ is asymptotically optimal for $s=1$
+- $O(\log P)$ is asymptotically optimal for $s=1$
 - But what about large $s$?
 
 ### Very Large Message Broadcast
@@ -247,5 +247,5 @@ $$P(t)=\begin{cases}
     \end{cases}$$
 
   - which can be bounded by
-  
+
   $$2^{\lfloor \frac {t}{L+2o} \rfloor} ≤P(t)≤2^{\lfloor \frac t o \rfloor}$$
