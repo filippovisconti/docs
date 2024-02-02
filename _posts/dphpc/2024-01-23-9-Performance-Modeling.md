@@ -25,8 +25,11 @@ Formally:
 > $$S_p= \frac {S_p} {p} \leq \frac 1 { {1-f} +fp}$$
 
 For $p \rightarrow \infty$,
+
 $$T_\infty\geq fT_1$$
+
 $$S_\infty \leq \frac 1 f$$
+
 $$E_\infty = 0 \text{ if } f \neq 0 $$
 
 However, Amdahl's law describes the best, ideal case. In reality, things look much worse. For example, even with very little sequential code ($f=0.05$), the maximum speedup achievable with infinitely
@@ -66,7 +69,7 @@ Abstract program view to reason about execution of program.
 
 ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2016.35.13.png)
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2016.35.21.png)
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2016.35.21.png){: w="50%"}
 
 ### From traces to execution DAGs
 
@@ -78,7 +81,8 @@ Execution order $\xrightarrow{eo}$ is a total order (implies sequential executio
 
 ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2016.52.47.png)
 
-$\xrightarrow{p}$ forms a directed acyclic graph (DAG) of the program → Execution DAG ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2016.53.41.png)
+$\xrightarrow{p}$ forms a directed acyclic graph (DAG) of the program → Execution DAG
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2016.53.41.png)
 
 #### Example DAG
 
@@ -86,20 +90,20 @@ $\xrightarrow{p}$ forms a directed acyclic graph (DAG) of the program → Execut
 
 ### Work and Depth Metrics
 
-> Work: $W(n) =$ ## nodes in EDAG
+> Work: $W(n) =$ number of nodes in EDAG
 >
-> Depth: $(n) =$ #{nodes on longest path from S𝑡a𝑟𝑡 to En𝑑}
+> Depth: $D(n) =$ number of nodes on longest path from Start to End
 
 {: .prompt-tip}
-> Average parallelism: $\frac {W(n)}{(n)}$
+> Average parallelism: $\frac {W(n)}{D(n)}$
 
 #### Example $W = 6,  = 5$
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2017.58.52.png)
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2017.58.52.png){: w="50%"}
 
 #### Example: Reduction $(x_0, x_1, ..., x_{n-1})$
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2017.59.33.png)
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2017.59.33.png){: w="50%"}
 
 #### Example: Mergesort
 
@@ -117,13 +121,14 @@ Depth $D(n)=D(\frac n 2) + \theta(n) = \theta(n)$
 
 Parallelism $\theta(\log n)$
 
-> → Parallel merge with better $(n)$ exists
+> → Parallel merge with better $D(n)$ exists
 
 ## Scheduling EDAGs to Machines
 
-Simple machine model for parallel computing (idealized shared memory multiprocessor) ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.10.15.png)
+Simple machine model for parallel computing (idealized shared memory multiprocessor)
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.10.15.png)
 
-> 1. Instructions, including memory accesses, execute in unit time
+> 1. Instructions, including memory accesses, execute in unit time.
 > 2. Processors progress in lockstep (each time step, each processor executes one instruction)
 {: .prompt-warning }
 
@@ -133,14 +138,16 @@ Simple machine model for parallel computing (idealized shared memory multiproces
 >
 > Function that, given EDAG, selects at most $P$ ready instructions for execution at next time step
 
-Offline scheduler: computes schedule in advance Online scheduler: next instructions based on past instructions and set of ready instructions
+Offline scheduler: computes schedule in advance
+
+Online scheduler: next instructions based on past instructions and set of ready instructions
 
 Scheduling Lower Bound (PRAM):
 $$ T_p \geq \max (\frac W P, D)$$
 
 Proof:
 
-- Total number of instructions = W ≤ P ⋅ 𝑇 P
+- Total number of instructions = $W ≤ P ⋅ 𝑇_P$
 - Each step can execute $≤ 1$ instruction on a directed path of the EDAG → $ ≤ 𝑇_P$
 
 ### Greedy Scheduler
@@ -174,7 +181,7 @@ Maintain task pile of unfinished tasks, each ready or not. Initial root task in 
 
 > Pile needs concurrency-control / locking!
 
-At each step, processors are idle or have a task 𝑡 to work on:
+At each step, processors are idle or have a task t to work on:
 
 ```plaintext
 If idle:
@@ -182,13 +189,13 @@ If idle:
 
 If working on task 𝒕:
  Case 0
-  𝑡 has another instruction to execute → execute it
+  t has another instruction to execute → execute it
  Case 1
-  𝑡 spawns task 𝑠 → return 𝑡 to pile, continue with 𝑠
+  t spawns task 𝑠 → return t to pile, continue with 𝑠
  Case 2
-  𝑡 stalls → return 𝑡 to pile and idle
+  t stalls → return t to pile and idle
  Case 3
-  𝑡 dies (finishes) → continue with parent p or idle
+  t dies (finishes) → continue with parent p or idle
   (if p has living children)
 ```
 
@@ -201,18 +208,18 @@ Each processor maintains its own workpile:
 - All processors do only useful work and operate locally as long as there is work
 - Processors with empty work-piles will try to steal tasks
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.37.59.png)
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.37.59.png){: w="50%"}
 
 At each step, we associate with each executing or ready task a node of the EDAG. Each `vspawn` operation spawns exactly two children tasks. Spawns of more than two tasks are replaced by a binary tree
 of operations that spawn a pair of tasks.
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.38.50.png)
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.38.50.png){: w="50%"}
 If a task enabled two children, one of them is pushed to the local work-pile and the other is executed next.
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.39.14.png)
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.39.14.png){: w="50%"}
 If a task enabled one child, it will continue executing that child.
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.39.30.png)
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.39.30.png){: w="50%"}
 
 > - The depth of the enabling tree is less or equal to the depth of the EDAG.
 > - The exact structure of the enabling tree depends on the scheduler.
@@ -220,7 +227,7 @@ If a task enabled one child, it will continue executing that child.
 
 #### Work-stealing scheduler – enabling tree example
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.41.17.png)
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.41.17.png){: w="50%"}
 
 > If the deque is empty, it will attempt to steal a node from the top of another randomly chosen deque.
 
@@ -240,7 +247,7 @@ sequential performance (no speedup)?
 At each time-step, a processor either executes a task or attempts a steal.
 $$P \cdot 𝑇_P = S + W$$
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.44.19.png)
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.44.19.png){: w="50%"}
 
 > Thesis:
 >
@@ -272,11 +279,11 @@ The depth is an upper bound on the number of timesteps where some processor is i
 
 ### Corollary 1
 
-We define the depth $𝑑(u)$ of a node to be the distance of node $u$ from the root (start) in the enabling tree. $\rightarrow$ Structural lemma $\rightarrow$
+We define the depth $d(u)$ of a node to be the distance of node $u$ from the root (start) in the enabling tree. $\rightarrow$ Structural lemma $\rightarrow$
 
 > Corollary 1
 >
-> If $v_1,...,v_k$ are nodes in a deque ordered from the bottom to the top, and $v_0$ is the currently executing node, then we have $d(v_0) ≥ 𝑑(v_1) > ⋯ > 𝑑(v_k)$.
+> If $v_1,...,v_k$ are nodes in a deque ordered from the bottom to the top, and $v_0$ is the currently executing node, then we have $d(v_0) ≥ d(v_1) > ⋯ > d(v_k)$.
 {: .prompt-warning}
 
 The level of nodes (excluding the currently executing node) in each deque are strictly increasing from top to bottom.

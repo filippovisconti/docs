@@ -8,14 +8,14 @@ math: true
 
 When talking about work and depth, we assume each loop iteration on a single PE is unit-cost (may contain multiple instructions!)
 
-Given: $n$ values in linked list, looking for sum of all values ![example](/assets/img/ScreenShot%202024-01-12%20at%2017.36.19.png)
+Given: $n$ values in linked list, looking for sum of all values ![example](/assets/img/ScreenShot%202024-01-12%20at%2017.36.19.png){: w="50%"}
 
 > ***Independent Set***
 >
 > A set $I ⊂ S$ is called an **independent** set if **no** $2$ elements in $I$ are connected!
 {: .prompt-tip}
 
-![shutup](/assets/img/ScreenShot%202024-01-12%20at%2017.44.00.png)
+![shutup](/assets/img/ScreenShot%202024-01-12%20at%2017.44.00.png){: w="50%"}
 
 ## Reduction on a linked list
 
@@ -84,7 +84,7 @@ Introduce **randomness** to create local differences!
 
   $$P(v \in I)=\frac 1 4$$
   
-  ![shutup](/assets/img/ScreenShot%202024-01-12%20at%2017.48.14.png)
+  ![shutup](/assets/img/ScreenShot%202024-01-12%20at%2017.48.14.png){: w="50%"}
 
 #### Optimizations
 
@@ -94,14 +94,19 @@ As the set shrinks, the random selection will get less efficient
 - **Switch** to a different algorithm: *Recursive doubling*!
 
 ```c
-for (i=0; i ≤ ⌈log2n⌉; ++i) 
+for (i=0; i <= ceil(log2n); ++i) 
     for(each elem do in parallel) {
         elem.val += elem.next.val;
         elem.next = elem.next.next;
     }
 ```
 
-Algorithm **computes** (reverse) **prefix** **sum** on the list! **Result** at original list **head** is **overall** sum.
+Algorithm **computes** (reverse) **prefix** **sum** on the list! 
+
+> **Result**: 
+> 
+> at original list **head** we'll find the **overall** sum.
+{: .prompt-tip}
 
 ---
 
@@ -112,7 +117,7 @@ What are **work** and **depth**?
 
 ## Prefix sum on a linked list
 
-Didn’t we just see it? Yes, but work-inefficient (if $p<<n$)! We extend the randomized symmetry-breaking reduction algorithms
+Didn’t we just see it? Yes, but work-inefficient (if $p << n$)! We extend the randomized symmetry-breaking reduction algorithms
 
 1. **Run** the **reduction** algorithm as before
 2. **Reinsert** in **reverse** order of **deletion**
@@ -141,7 +146,7 @@ Straightforward and cheap to compute sequentially – question: **how**?
 - Our oblivious semiring-based algorithm was $W = O(n^3\log n),  D= O(\log^2n)$
 
 FAR from work optimality! Question: can we do better by dropping obliviousness?
-> ![example](/assets/img/ScreenShot%202024-01-12%20at%2018.31.18.png)
+> ![example](/assets/img/ScreenShot%202024-01-12%20at%2018.31.18.png){: w="50%"}
 >
 > 1. Initially, **each** vertex is a (singleton) **supervertex**
 > 2. Successively **merge** **neighboring** **supervertices**
@@ -177,7 +182,8 @@ Algorithm proceeds in two operations:
 > A fixpoint algorithm proceeds iteratively and monotonically until it reaches a final state that is not left by iterating further
 > {: .prompt-tip}
 
-![proofs](/assets/img/ScreenShot%202024-01-12%20at%2018.35.44.png) ![shutup](/assets/img/ScreenShot%202024-01-12%20at%2018.35.58.png)
+![proofs](/assets/img/ScreenShot%202024-01-12%20at%2018.35.44.png)
+![shutup](/assets/img/ScreenShot%202024-01-12%20at%2018.35.58.png)
 
 Work and depth?
 

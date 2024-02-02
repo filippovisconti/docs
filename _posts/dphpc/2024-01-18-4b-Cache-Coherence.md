@@ -7,12 +7,15 @@ math: true
 
 
 
-> Cache **coherence** is a **fundamental** concept in computer **architecture**, particularly in systems with **multiple** processors or **cores** that **share** access to a **common** **memory**. In a multi-processor system, **each**
+> **Cache** **coherence** is a **fundamental** concept in computer **architecture**, particularly in systems with **multiple** processors or **cores** that **share** access to a **common** **memory**.
+>
+> In a multi-processor system, **each**
 > **processor** often has its **own** **cache** memory to store frequently used data for faster access. Cache **coherence** **ensures** that **all** processors observe a **consistent** **view** of memory, despite the presence of
 > individual caches.
 >
-> The need for cache coherence arises because **each** processor **can** have a **local** copy of a **portion** of the main memory in its cache. When **one** processor **updates** or modifies its local copy, **other** processors
-> **should** be **made** **aware** of this **change** to maintain a consistent and correct view of the shared memory.
+> The **need** for cache coherence **arises** because **each** **processor** **can** have a **local** **copy** of a **portion** of the main memory in its cache. When **one** processor **updates** or modifies its local copy, **other** processors **should** be **made** **aware** of this **change** to maintain a consistent and correct view of the shared memory.
+
+## Example
 
 - **Which one** is valid after local updates?
   - Cache coherence manages the existence of multiple copies
@@ -70,31 +73,22 @@ Everything else: memory model issues.
 
 ## Cache coherence protocols
 
-Programmer can **hardly** deal with **unpredictable** **behavior**!
+Programmers can **hardly** deal with **unpredictable** **behavior**!
 
 - **Cache** **controller** maintains data **integrity**
 - **All** **writes** to different locations are **visible**
 
-> - Shared bus or (broadcast) network
->
-> Directory-based
->
-> - Record information necessary to maintain coherence:
-> - e.g., owner and state of a line etc
-{: .prompt-info }
-
 ### Snooping
 
-- **Shared** bus or (broadcast) network
-- Cache **controller** "snoops" all transactions
+- Through a **shared** bus or (broadcast) network, the cache **controller** "snoops" all transactions
 - Monitors and changes the state of the cache’s data
 - Works at **small** scale, challenging at large-scale
 
 ### Directory-based
 
-- Record information necessary to maintain coherence
+- **Record** information necessary to maintain coherence
   - e.g., owner and state of a line etc.
-- Central/Distributed directory for cache line ownership
+- Central/Distributed **directory** for cache line **ownership**
 - **Scalable** but more complex/expensive
   - e.g., Intel Xeon Phi KNC
 
@@ -102,9 +96,9 @@ Programmer can **hardly** deal with **unpredictable** **behavior**!
 
 Concerns/Goals
 
-- Performance
-- Implementation cost (chip space, more important: dynamic energy)
-- Correctness
+- **Performance**
+- Implementation **cost** (chip space, more important: dynamic energy)
+- **Correctness**
 - (Memory model side effects)
 
 ## Issues
@@ -138,26 +132,32 @@ Cache 1 **holds** value that was **already** modified in cache 2.
 
 ### Invalidation-based
 
-- On **each** write of a shared line, it has to **invalidate** copies in **remote** caches
-- Simple implementation for bus-based systems:
-  - Each cache snoops
-  - Invalidate lines written by other CPUs
-  - Signal sharing for cache lines in local cache to other caches
-- **Only** write **misses** hit the bus (works with write-back caches)
+On **each** write of a shared line, it has to **invalidate** copies in **remote** caches
+
+**Simple** implementation for bus-based systems:
+
+  1. Each cache **snoops**
+  2. **Invalidate** lines written by **other** CPUs
+  3. *Signal* *sharing* for cache lines in local cache to other caches
+
+**Only** **write** **misses** hit the **bus** (works with write-back caches)
+
 - **Subsequent** writes to the **same** cache line are **local**
   - → Good for multiple local writes to the same line (in the same cache)
 
 ### Update-based
 
-- **Local** write updates copies in **remote** caches
-  - Can update all CPUs at once
-  - Multiple writes cause multiple updates (more traffic)
-- All sharers continue to hit cache line after one core writes
+**Local** write **updates** copies in **remote** caches
 
-Implicit assumption: shared lines are accessed often
+- Can update **all** CPUs at **once**
+- Multiple writes cause multiple updates (more **traffic**)
+
+All sharers continue to hit cache line after one core writes
+
+*Implicit* assumption: **shared** lines are **accessed** **often**
 
 - Supports producer-consumer pattern well
-- Many (local) writes may waste bandwidth!
+- Many (local) writes may **waste** **bandwidth**!
 
 Hybrid forms are possible!
 
@@ -167,18 +167,18 @@ MESI is a cache coherence protocol used in multiprocessor systems to maintain co
 in:
 
 1. **Modified (M):**
-   - The cache line is present in the cache, and it has been **modified**.
-   - This means that the data in the cache **differs** from the data in the main memory.
+   - The cache line is **present** in the cache, and it **has** been **modified**.
+   - This means that the **data** **in** the **cache** **differs** **from** the data in the main **memory**.
    - Memory is **stale**
 
 2. **Exclusive (E):**
-   - The cache line is present in the cache, and it is **not** present in any **other** caches.
-   - The data in the cache is the **same** as in the main memory, but no other caches have it.
+   - The cache line is **present** in the cache, and it's **not** **present** in any **other** caches.
+   - The data in the cache is the **same** **as** in the main **memory**, and **no** other caches have it.
    - Memory is **up to date**
 
 3. **Shared (S):**
-   - The cache line is present in the cache, and it may be present in other caches as well.
-   - The data in the cache is **consistent** with the main memory, and other caches **may** also have a *copy*.
+   - The cache line is **present** in the cache, and it **may** be **present** in **other** caches as well.
+   - The data in the **cache** is **consistent** with the main **memory**, and o**t**her caches **may** also have a *copy*.
    - Memory is **up to date**
 
 4. **Invalid (I):**
@@ -216,33 +216,32 @@ The MESI protocol operates based on a set of rules that govern state transitions
 
 **Clean line:**
 
-- ***Content*** of cache line and main memory is ***identical*** (also, memory is up to date)
+- ***Content*** of cache line and main memory is ***identical*** (a.k.a memory is **up to date**)
 - Can be evicted **without** write-back
 
 **Dirty line:**
 
-- ***Content*** of cache line and main memory ***differ*** (also: memory is stale)
-- Needs to be written back eventually
-  - Time depends on protocol details
+- ***Content*** of cache line and main memory ***differ*** (a.k.a memory is **stale**)
+- **Needs** to be **written** **back** eventually
+  - Timing depends on protocol details
 
 **Bus transaction:**
 
-- A signal on the bus that can be observed by all caches
-- Usually blocking
+A **signal** on the **bus** that can be **observed** by **all** caches, which usually is **blocking**.
 
 **Local read/write:**
 
-- A load/store operation originating at a core connected to the cache
+- A load/store operation originating at a core connected to the cache.
 
 ## MOESI
 
 - Modified (M): Modified Exclusive
   - No copies in other caches, local copy dirty
   - Memory is stale, cache supplies copy (reply to `BusRd*`)
-- Owner (O): Modified Shared
+- **Owner** (O): **Modified Shared**
   - **Exclusive** right to make changes
-  - Other S copies may exist ("dirty sharing")
-  - Memory is stale, cache supplies copy (reply to `BusRd*`)
+  - Other **S** copies may exist ("dirty sharing")
+  - Memory is **stale**, **cache** **supplies** **copy** (reply to `BusRd*`)
 - Exclusive (E):
   - Same as MESI
   - (one local copy, up to date memory)
@@ -256,18 +255,18 @@ The MESI protocol operates based on a set of rules that govern state transitions
 
 Same as MESI, but adds:
 
-- Forward (F):
+- **Forward** (F):
   - Special form of S state
     - other caches may have line in S
   - **Most recent requester** of line is in F state
-  - Cache acts as responder for requests to this line
+  - Cache acts as **responder** for requests to this line
 
 ## Multi-level caches
 
-Most systems have multi-level caches.
+Most systems have **multi**-level caches.
 > **Problem**:
 >
-> only "last level cache" is connected to bus or network
+> only "**last** level cache" is **connected** to bus or network
 {: .prompt-warning}
 
 - Snoop requests are relevant for inner-levels of cache (L1)
@@ -300,11 +299,11 @@ Directory-based schemes are more scalable
 
 ### Basic Scheme
 
-System with N processors Pi For each memory block (size: cache line) maintain a directory entry
+System with $N$ processors $P_i$ For each memory block (size: cache line) maintain a directory entry
 
-- N presence bits
-  - Set if block in cache of Pi
-- 1 dirty bit
+- $N$ presence bits
+  - Set if block in cache of $P_i$
+- $1$ dirty bit
 
 ![shutup](/assets/img/ScreenShot%202024-01-06%20at%2015.03.09.png){: w="50%"}
 
@@ -313,11 +312,13 @@ System with N processors Pi For each memory block (size: cache line) maintain a 
 $P_i$ intends to read, but misses.
 
 If **dirty** bit in the directory is **off**:
+
 1. Read from main memory
 2. Set `presence[i]`
 3. Supply data to reader
 
 If **dirty** bit is **on**:
+
 1. Recall cache line from $P_j$ (determined by `presence[]`)
 2. Update memory
 3. Unset dirty bit, block shared
@@ -327,17 +328,17 @@ If **dirty** bit is **on**:
 ### Write miss
 
 If **dirty** bit in the directory is **off**:
+
 1. Send invalidations to all processors $P_j$ with `presence[j] = 1`
 2. Unset presence bit for all processors
 3. Set dirty bit
 4. Set `presence[k]`, owner $P_i$
 
 If **dirty** bit is **on**:
+
 1. Recall cache line from owner $P_j$ (determined by `presence[]`)
 2. Update memory
 3. Unset `presence[j]`
 4. Set `presence[i]`
    - Dirty bit remains set
 5. Supply data to writer
-
-

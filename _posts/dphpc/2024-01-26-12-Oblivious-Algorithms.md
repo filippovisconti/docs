@@ -86,7 +86,9 @@ $$W(n)=D(n)=n-1$$
 
 - Question: what is W(n) and D(n) of the optimal parallel summation?
 
-$$W(n)=n-1$ $D(n)=⌈\log_2 n⌉$$
+$$W(n)=n-1$$
+
+$$D(n)=⌈\log_2 n⌉$$
 
 - Are both $W$ and $D$ optimal?
   - Yes!
@@ -132,7 +134,7 @@ Idea: don't reuse intermediate values, recompute them!
 
 ### Is there a depth- and work-optimal algorithm?
 
-The answer is surprisingly: no
+The answer is, surprisingly, **no**.
 
 - We know, for parallel prefix: $W + D ≥ 2n − 2$
 
@@ -170,7 +172,7 @@ It’s the simplest problem to demonstrate and prove $W-D$ tradeoffs, and it’s
 
 Prefix summation as function composition is extremely powerful!
 
-> With prefix summation many seemingly sequential problems can be parallelized.
+> With prefix summation **many** *seemingly* **sequential** problems **can** be **parallelized**.
 {: .prompt-tip}
 
 Simple first example: binary adder – $𝑠 = a + 𝑏$ ($n$-bit numbers)
@@ -246,7 +248,7 @@ Construct **distance** matrix **from adjacency** matrix by **replacing** all **o
 
 *Question*: How could we compute the **transitive** **closure** of a graph?
 
-- **Multiply** the matrix $(A + I) n$ **times** with **itself** in the **Boolean** semiring!
+- **Multiply** the matrix $(A + I)$ $n$ **times** with **itself** in the **Boolean** semiring!
 - Why?
   - Demonstrate that $(A + I)^2$ has 1s for each path of at most length $1$
   - By induction show that $(A + I)^ k$ has 1s for each path of at most length $k$
