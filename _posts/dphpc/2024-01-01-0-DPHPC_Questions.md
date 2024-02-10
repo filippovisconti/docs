@@ -219,14 +219,11 @@ int my_Allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype,
     int rank = -1, size = -1;
     MPI_Comm_rank(comm, &rank);
     MPI_Comm_size(comm, &size);
+
     if (rank == -1 || size == -1) exit(1);
     int root_rank = 0;
 
-    if (rank == root_rank) 
-        my_Gather(   NULL, 1, MPI_INT, recvbuf, size, MPI_INT, root_rank, comm);
-    else 
-        my_Gather(sendbuf, 1, MPI_INT,    NULL, size, MPI_INT, root_rank, comm);
-    
+    my_Gather(sendbuf, 1, MPI_INT, recvbuf, size, MPI_INT, root_rank, comm);
 
     my_Bcast(recvbuf, size, MPI_INT, root_rank, comm);
 
@@ -271,7 +268,7 @@ int my_Alltoall(const void *buffer_send, int count_send, MPI_Datatype datatype_s
 Depending on the number of processors, divide the matrices into blocks (or submatrices) and assign each block to one processor. Now each processor will perform a matrix addition on the assigned
 blocks, executing ${\frac n b}^2$ additions.
 
-## What is the work, depth and average parallelism of your algorithm?
+### What is the work, depth and average parallelism of your algorithm?
 
 The total work will be $W(n) = n^2$, while the depth will be dependant on how many processors we have. If we have $n^2$ processors, the depth would be $1$. This means that$\text{ for } p\rightarrow
 \infty, D(n)= 1$. The average parallelism is thus $n^2$.
@@ -585,9 +582,13 @@ the first message.
 
 $$C_1 = (n-1)\alpha$$
 
-The bandwidth cost will be paid for each message, and for each processor. This means that the total bandwidth cost will be $$C_2=k(n-1)s\beta$$
+The bandwidth cost will be paid for each message, and for each processor. This means that the total bandwidth cost will be
 
-The final total cost will be $$C = C_1 + C_2 = (n-1)(\alpha + ks\beta)$$
+$$C_2=k(n-1)s\beta$$
+
+The final total cost will be
+
+$$C = C_1 + C_2 = (n-1)(\alpha + ks\beta)$$
 
 If, however, we can assume that a processor can send a message to the next processor while receiving a message from the previous one, then the latency cost will be paid only once, and not $n-1$ times.
 

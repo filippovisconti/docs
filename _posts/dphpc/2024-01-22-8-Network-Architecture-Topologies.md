@@ -52,11 +52,11 @@ And many more...
 
 ### Bus
 
-At any time, only one source can communicate with one destination.
+At any time, **only** **1** source can **communicate** **with** **1** destination.
 
 - It's very cheap
-- We can cut the network in half by cutting one link
-  - Single point of failure
+- We can cut the network in **half** by cutting one link
+  - **Single** point of **failure**
 
 ![Bus](/assets/img/ScreenShot%202024-01-08%20at%2010.31.20.png)
 
@@ -87,7 +87,7 @@ Any source-destination pair can communicate at any time. However, it's very expe
 
 A crossbar switch connects $N$ inputs to $M$ outputs
 
-- At each crosspoint a switch/transistor is either "open" or connects the input to the output line ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2010.38.11.png)
+- At each crosspoint a switch/transistor is either "open" or connects the input to the output line ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2010.38.11.png){: width="50%"}
 
 > It's **cheaper** than fully connected network: $O(N+M)$ cables vs $O(N*M)$.
 >
@@ -108,7 +108,7 @@ $$V_1 \cap V_2 = \emptyset$$
 
 for each element in $(u,v)$ in $C$: $u \in V_1$, $v \in V_2$ or vise versa.
 
-> _**Partitioned**_
+> _**Partitioned**_ means that:
 >
 > Each path from a node in $V_1$ to a node in $V_2$ must contain an edge in $C(V_1, V_2)$ ![Cuts](/assets/img/ScreenShot%202024-01-08%20at%2010.49.27.png)
 >
@@ -141,7 +141,7 @@ In theory, bisection bandwidth tells us the **worst-case** maximum throughput
 
 Why "in theory"?
 
-- Remember Ethernet's spanning tree protocol?
+- Remember Ethernet's **spanning tree protocol**?
 - Routing / Flow-control are completely ignored!
 
 Effective bisection bandwidth: like BB, but taking routing into account.
@@ -171,7 +171,7 @@ A path (or route) in a network is an ordered set of channels (edges in graph lin
 - Destination of $P$: $head(c_n)$
 - Length or hops in a path $P$: $$\|P\|$$
 
-![Paths](/assets/img/ScreenShot%202024-01-08%20at%2011.15.38.png)
+![Paths](/assets/img/ScreenShot%202024-01-08%20at%2011.15.38.png){: width="50%"}
 
 ### Diameter
 
@@ -184,12 +184,12 @@ A path (or route) in a network is an ordered set of channels (edges in graph lin
 
 ### 2D-Mesh
 
-> ![2D Mesh](/assets/img/ScreenShot%202024-01-08%20at%2011.45.18.png)
->
+![2D Mesh](/assets/img/ScreenShot%202024-01-08%20at%2011.45.18.png){: width="50%"}
+
 > Is this a direct or indirect topology?
 >
 > - **Direct**, each node is a switch _**and**_ source/dest
-
+{: .prompt-tip}
 Let’s assume $𝑀 = 𝑁 = 2k$, $P = 𝑀 ⋅ 𝑁$
 
 | Property            | Value           |
@@ -199,16 +199,16 @@ Let’s assume $𝑀 = 𝑁 = 2k$, $P = 𝑀 ⋅ 𝑁$
 | Total links         | $M(N-1)+N(M-1)\approx 2P$ |
 | Bisection Bandwidth | $\sqrt P$       |
 
-> In a 2d mesh, the **maximum** number of **paths** which do **not share** a channel/**link** between any two nodes **is $4$** because each node as a maximum of $4$ links
-{: .prompt-tip}
+> In a 2d mesh, the **maximum** number of **paths** which do **not share** a channel/**link** **between any 2 nodes** **is $4$**, because each node as a maximum of $4$ links
+{: .prompt-warning}
 
 ### 2D Torus
 
-Biggest problem with mesh: high diameter
+Biggest **problem** with _mesh_: **high diameter**
 
 - We can half the diameter by adding $2\sqrt P$ links
 
-![2D Torus](/assets/img/ScreenShot%202024-01-08%20at%2011.51.23.png)
+![2D Torus](/assets/img/ScreenShot%202024-01-08%20at%2011.51.23.png){: width="50%"}
 
 | Property            | Value           |
 | ------------------- | --------------- |
@@ -238,7 +238,7 @@ When going from stage $i − 1$ to stage $i$, flip $d_i$ and $d_0$. Wiring of te
 
 #### Example $k=3,n=2$
 
-![Butterfly](/assets/img/ScreenShot%202024-01-08%20at%2011.55.25.png) ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2011.55.36.png)
+|![Butterfly](/assets/img/ScreenShot%202024-01-08%20at%2011.55.25.png) |![shutup](/assets/img/ScreenShot%202024-01-08%20at%2011.55.36.png)|
 
 | Property            | Value           |
 | ------------------- | --------------- |
@@ -249,15 +249,21 @@ When going from stage $i − 1$ to stage $i$, flip $d_i$ and $d_0$. Wiring of te
 
 We can construct an arbitrary sized network, given our technology constraint $k$.
 
+|Number of nodes |$2n^k$|
+|Total  number of switch| $nk^{(n-1)}$|
+|Number of stages |$n$|
+|Switch ports| $2k$, $k$ in, $k$ out|
+
 ### Blocking and Non-blocking Networks
 
 We have seen that in a crossbar and in a fully connected network, any disjoint source/destination pair can communicate independently.
 
 How about our 2-ary 3-fly?
 
-![Overlapping paths](/assets/img/ScreenShot%202024-01-08%20at%2012.01.15.png)
-
-- The 2-ary 3-fly is a **blocking** network
+>![Overlapping paths](/assets/img/ScreenShot%202024-01-08%20at%2012.01.15.png){: width="50%"}
+>
+> The 2-ary 3-fly is a **blocking** network
+{: .prompt-warning}
 
 > Networks which allow all **disjoint** src/dst pairs to **communicate** **independently** are called ***non-blocking***
 {: .prompt-tip}
@@ -270,8 +276,9 @@ You may also hear about **non-interfering** networks (weaker than non-blocking, 
 
 Can we built arbitrarily large non-blocking topologies - given that the biggest crossbar we can manufacture in a chip is of limited size?
 
-> 4 $N\times N$ crossbars can be used to build a $2N\times 2N$ crossbar
-> ![Crossbar](/assets/img/ScreenShot%202024-01-08%20at%2012.01.35.png)
+> $4(N\times N)$ crossbars can be used to build a $2N\times 2N$ crossbar
+> ![Crossbar](/assets/img/ScreenShot%202024-01-08%20at%2012.01.35.png){: width="50%"}
+{: .prompt-tip}
 
 ### Clos
 
@@ -360,14 +367,14 @@ In all regular networks, we can use their construction rule to also determine a 
 >
 > - Does not take advantage of path diversity, certain links will be > underutilised if traffic is not random
 > - Cannot react to broken or congested links, single broken link breaks the network
-> ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2012.28.36.png)
+> ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2012.28.36.png){: width="50%"}
 {: .prompt-info}
 
 ### Valiant Routing (A Non-deterministic Oblivious Routing Scheme)
 
 Solves the problem of link-underutilization by choosing a random intermediate destination
 
-- At the cost of network bandwidth and latency ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2012.29.03.png)
+- At the cost of network bandwidth and latency ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2012.29.03.png){: width="60%"}
 
 ### Table-based Routing
 

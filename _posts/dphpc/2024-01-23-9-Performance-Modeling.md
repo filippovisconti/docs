@@ -18,22 +18,23 @@ Formally:
 > - Let $𝑇_p$ be the runtime on p processors, then
 > $$ T_p \geq fT_1 + \frac {(1-f)T_1}{p}$$
 >
-> Speedup
-> $$S_p= \frac {T_1} {T_p} \leq \frac 1 {\frac {1-f}{p} +f}$$
+> |Speedup| $$S_p= \frac {T_1} {T_p} \leq \frac 1 {\frac {1-f}{p} +f}$$|
+> |||
+> |Efficiency| $$S_p= \frac {S_p} {p} \leq \frac 1 { {1-f} +fp}$$|
 >
-> Efficiency
-> $$S_p= \frac {S_p} {p} \leq \frac 1 { {1-f} +fp}$$
+> ---
+>
+> For $p \rightarrow \infty$,
+>
+> $$T_\infty\geq fT_1$$
+>
+> $$S_\infty \leq \frac 1 f$$
+>
+> $$E_\infty = 0 \text{ if } f \neq 0 $$
+{: .prompt-info}
 
-For $p \rightarrow \infty$,
-
-$$T_\infty\geq fT_1$$
-
-$$S_\infty \leq \frac 1 f$$
-
-$$E_\infty = 0 \text{ if } f \neq 0 $$
-
-However, Amdahl's law describes the best, ideal case. In reality, things look much worse. For example, even with very little sequential code ($f=0.05$), the maximum speedup achievable with infinitely
-many processors is only 20.
+However, Amdahl's law describes the best, ideal case. In reality, things look much worse. For example, even with very little sequential code $(f=0.05)$, the maximum speedup achievable with infinitely
+many processors is only $20$.
 
 This is due to a number of factors, such as:
 
@@ -65,10 +66,13 @@ More processors → more memory → solve larger problem size
 
 Abstract program view to reason about execution of program.
 
-> Execution Trace: order in which program instructions are executed, given as sequence of instructions. It depends on both program code and program inputs.
-
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2016.35.13.png)
-
+> ***Execution Trace***
+>
+> Order in which program instructions are executed, given as sequence of instructions. It depends on both program code and program inputs.
+>
+> - $\xrightarrow{eo}$: Execution order
+> - $u \xrightarrow{eo} v$: instruction $u$ completes before instruction $v$ is executed
+{: .prompt-info}
 ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2016.35.21.png){: w="50%"}
 
 ### From traces to execution DAGs
@@ -97,29 +101,25 @@ $\xrightarrow{p}$ forms a directed acyclic graph (DAG) of the program → Execut
 {: .prompt-tip}
 > Average parallelism: $\frac {W(n)}{D(n)}$
 
-#### Example $W = 6,  = 5$
-
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2017.58.52.png){: w="50%"}
-
-#### Example: Reduction $(x_0, x_1, ..., x_{n-1})$
-
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2017.59.33.png){: w="50%"}
+|Example $W = 6,  = 5$|Example: Reduction $(x_0, x_1, ..., x_{n-1})$|
+|-|-|
+|![shutup](/assets/img/ScreenShot%202024-01-08%20at%2017.58.52.png)|![shutup](/assets/img/ScreenShot%202024-01-08%20at%2017.59.33.png)|
 
 #### Example: Mergesort
 
 ```c
 sort(L):
   if length(L)<2: return L;
+
   L1 = sort(left(L));
   L2 = sort(right(L));
+
   return merge(L1, L2);
 ```
 
-Work $W(n)= \theta(n\log n)$
-
-Depth $D(n)=D(\frac n 2) + \theta(n) = \theta(n)$
-
-Parallelism $\theta(\log n)$
+|Work| $W(n)= \theta(n\log n)$|
+|Depth| $D(n)=D(\frac n 2) + \theta(n) = \theta(n)$|
+|Parallelism| $\theta(\log n)$|
 
 > → Parallel merge with better $D(n)$ exists
 
@@ -154,9 +154,9 @@ Proof:
 
 Idea: Do as much as possible in every step
 
->***Definition***: Ready node
+> ***Ready node***
 >
-> - a node is ready if all predecessors have been executed
+> a node is **ready** **if** **all** predecessors have been **executed**
 
 #### Greedy Scheduling Procedure (Online)
 
@@ -201,28 +201,25 @@ If working on task 𝒕:
 
 ### Work-stealing scheduler
 
-The centralized workpile of the greedy scheduler can become a bottleneck when the number of processors is large.
+The **centralized workpile** of the **greedy** scheduler can become a **bottleneck** when the **number** of processors is **large**.
 
-Each processor maintains its own workpile:
+Each **processor** maintains its **own workpile**:
 
-- All processors do only useful work and operate locally as long as there is work
-- Processors with empty work-piles will try to steal tasks
+- All processors do **only** **useful** **work** and operate locally as long as there is work
+- **Processors** with **empty** work-piles will try to **steal** tasks
 
 ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.37.59.png){: w="50%"}
 
-At each step, we associate with each executing or ready task a node of the EDAG. Each `vspawn` operation spawns exactly two children tasks. Spawns of more than two tasks are replaced by a binary tree
-of operations that spawn a pair of tasks.
+At each step, we **associate** **with** **each** executing or ready **task** **a node** of the EDAG.
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.38.50.png){: w="50%"}
-If a task enabled two children, one of them is pushed to the local work-pile and the other is executed next.
+> Each `vspawn` operation spawns exactly two children tasks. Spawns of more than two tasks are replaced by a binary tree of operations that spawn a pair of tasks.
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.39.14.png){: w="50%"}
-If a task enabled one child, it will continue executing that child.
+|If a task enabled **2 children**, 1 of them is **pushed**<br> to the **local** work-pile and the **other** is **executed** next.|![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.38.50.png)|
+|If a task enabled **1 child**, it will **continue** <br>**executing** that child.|![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.39.14.png)|
+||![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.39.30.png)|
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.39.30.png){: w="50%"}
-
-> - The depth of the enabling tree is less or equal to the depth of the EDAG.
-> - The exact structure of the enabling tree depends on the scheduler.
+> - The **depth** of the **enabling** tree is **less** or equal to the **depth** of the **EDAG**.
+> - The **exact** **structure** of the enabling tree **depends** on the **scheduler**.
 {: .prompt-info }
 
 #### Work-stealing scheduler – enabling tree example
@@ -231,88 +228,86 @@ If a task enabled one child, it will continue executing that child.
 
 > If the deque is empty, it will attempt to steal a node from the top of another randomly chosen deque.
 
-A steal may fail if the target deque has zero or one entries or was successfully targeted by another stealer. Stealing is overhead! How do we know that we are not stealing all the time, leading to
-sequential performance (no speedup)?
+A **steal may fail** if the target deque has **0** or 1 **entries** **or** **was successfully targeted by another stealer**.
+
+> Stealing is overhead! How do we know that we are not stealing all the time, leading to sequential performance (no speedup)?
+{: .prompt-warning}
 
 ## Work stealing scheduler: Proof sketch
 
-### Lemma 1
-
-> Lemma 1
+> **Lemma 1**
 >
-> If S is the number of attempted steals then
-> $$𝑻_𝑷 = \frac {𝑾 + 𝑺} 𝑷$$
-> {:.prompt-tip}
+> If $S$ is the number of attempted steals then
+>
+> $$T_P = \frac {W + S} P \qquad \longrightarrow \qquad  P \cdot T_P = S + W$$
+{:.prompt-tip}
 
 At each time-step, a processor either executes a task or attempts a steal.
-$$P \cdot 𝑇_P = S + W$$
 
 ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.44.19.png){: w="50%"}
 
-> Thesis:
+> ***Thesis***
 >
 > The goal of the proof is to show that the expected number of steal attempt is
-> $$\mathbb{E} [S] = O(PD)$$
-> $$\longrightarrow \mathbb{E} [T_P] = \mathbb{E} [\frac {(W+S)}P]$$
-> $$= O(\frac W P + D)$$
-> {:.prompt-tip}
+>
+> $$\mathbb{E} [S] = O(PD) \longrightarrow \mathbb{E} [T_P] = \mathbb{E} [\frac {(W+S)}P] = O(\frac W P + D)$$
+{:.prompt-danger}
 
-The depth is an upper bound on the number of timesteps where some processor is idle (similar to Brent’s lemma), so that the total number of idling work cycles is $O(PD)$.
+The **depth** is an **upper bound** on the **number of timesteps** where some processor is idle (similar to Brent’s lemma), so that the **total number of idling work cycles is $O(PD)$**.
 
 ### Lemma 2: Structural lemma
 
 - For any of the $P$ deques, the parents of the nodes in the deque always lie on some root-to-leaf path of the enabling tree.
 - The order of the parents along this path corresponds to the top-to-bottom order of the nodes in the deque.
 
-> Let $v_1,...,v_k$ denote those nodes ordered from the bottom to the top. If there is an executing node on that processor, denote it as $v_0$.
+> Let $v_1,...,v_k$ denote those **nodes** ordered from the **bottom** to the **top**. If there is an **executing** node on that processor, denote it as $v_0$.
 >
-> Let $u_i$ be the node that enabled $v_i$. Then, for all $0 < i ≤ k$, node $u_i$ is an ancestor of node $u_{i-1}$ in the enabling tree.
+> Let $u_i$ be the **node** that **enabled** $v_i$. Then, $\forall \; 0 < i ≤ k$, node $u_i$ is an **ancestor** of node $u_{i-1}$ in the **enabling** tree.
 >
 > While we may have $u_0$ = $u_1$, for all $i \neq 0$, $u_i \neq u_{i+1}$
 {: .prompt-warning}
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.59.19.png)
-
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.59.39.png)
-
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.02.04.png) ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.02.15.png)
+|No new node| $1$ new node| $2$ new nodes| Steal|
+|-|-|-|-|
+|![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.59.19.png)|![shutup](/assets/img/ScreenShot%202024-01-08%20at%2018.59.39.png)|![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.02.04.png)| ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.02.15.png)|
 
 ### Corollary 1
 
 We define the depth $d(u)$ of a node to be the distance of node $u$ from the root (start) in the enabling tree. $\rightarrow$ Structural lemma $\rightarrow$
 
-> Corollary 1
+> **Corollary 1**
 >
-> If $v_1,...,v_k$ are nodes in a deque ordered from the bottom to the top, and $v_0$ is the currently executing node, then we have $d(v_0) ≥ d(v_1) > ⋯ > d(v_k)$.
+> If $v_1,...,v_k$ are **nodes** in a deque **ordered from the bottom to the top**, and $v_0$ is the **currently executing node**, then we have $d(v_0) ≥ d(v_1) > ⋯ > d(v_k)$.
 {: .prompt-warning}
 
-The level of nodes (excluding the currently executing node) in each deque are strictly increasing from top to bottom.
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.05.43.png)
+The **levels** of **nodes** (excluding the currently executing node) in each deque are **strictly increasing** from top to bottom.
+
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.05.43.png){: w="40%"}
 
 ### Potential function
 
-We define a potential function $\phi_i (u)$ at step $i$ for a ready node $u$ as ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.06.32.png)
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.06.47.png)
+We define a **potential** function $\phi_i (u)$ at step $i$ for a **ready** node $u$ as
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.06.32.png){: w="60%"}
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.06.47.png){: w="60%"}
+![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.06.58.png){: w="60%"}
 
-![shutup](/assets/img/ScreenShot%202024-01-08%20at%2019.06.58.png)
-
-We show that the potential is monotonic and non-increasing. We show that each possible transition decreases the potential (i.e., $\phi_{i+1} \leq \phi_i$ ). The four cases are the same as those from
-the structural lemma.
+We show that the **potential is monotonic and non-increasing**. We show that **each possible transition decreases the potential** (i.e., $\phi_{i+1} \leq \phi_i$ ). The 4 cases are the same as those from the structural lemma.
 
 > Note that a failed steal does not change the potential.
+{: .prompt-warning}
 
 #### Case 0
 
-A processor finishes the execution of a node u that enables no new node. ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2020.01.29.png)
+A processor **finishes the execution of a node u that enables no new node**. ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2020.01.29.png)
 
 #### Case 1
 
-A processor finishes the execution of a node $u$ that enables a new node $v$ to be executed immediately. Node v is the child of u in the enabling tree so that $$d(v)=d(u)+1$$
+A processor **finishes the execution of a node $u$ that enables a new node $v$** to be executed immediately. Node $v$ is the child of $u$ in the enabling tree so that $$d(v)=d(u)+1$$
 ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2020.03.00.png)
 
 #### Case 2
 
-A processor finishes the execution of a node u that enables two new nodes v and 𝑤, one being executed. Without loss of generality, assume that $v$ is executed and $𝑤$ is pushed to the lower end of the
+A processor **finishes the execution of a node $u$ that enables 2 new nodes** $v$ and $w$, one being executed. Without loss of generality, assume that $v$ is executed and $w$ is pushed to the lower end of the
 deque. ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2020.11.42.png)
 
 #### Case 3
@@ -321,16 +316,13 @@ A processor steals a node $u$ from the top of some other deque and readies it fo
 
 ### Lemma 3: Top-heavy Deques
 
-> Lemma 3
->
-> The top element in any non-empty deque has at least $\frac 3 4$ of the total potential of the deque.
+> The **top** element in **any** **non-empty deque** has **at least** $\frac 3 4$ of the **total** **potential** of the deque.
 {: .prompt-warning}
+
 ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2020.37.12.png)
 
 ### Lemma 4
 
-> Lemma 4
->
 > For $n>1$, $$(1-\frac 1 n)^n<\frac 1 e$$
 {: .prompt-warning}
 ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2020.38.51.png)
@@ -340,7 +332,7 @@ A processor steals a node $u$ from the top of some other deque and readies it fo
 Consider the following game: $p$ balls are tossed into $p$ bins. Each bin $i$ is associated with a weight $𝑤_i$ . Assume that the balls are equally likely to hit each bin, and all tosses are
 independent. What is the total weight of the non-empty bins?
 
-> Lemma 5
+> **Lemma 5**
 >
 > Let $W=\sum w_i$ and let 𝑋 be the total weight of the non-empty bins. Then for any $0 < 𝛽 < 1$,
 > $$Pr[X\geq \beta W] \geq 1- \frac 1 {(1-\beta)e}$$
@@ -357,11 +349,12 @@ independent. What is the total weight of the non-empty bins?
 
 ---
 
-> Lemma 6
+> **Lemma 6**
 >
 > Let $\Phi$ be the potential at the start of a round and let $\Phi'$ be the potential at the end of the round. Then
 > $$Pr[(\Phi - \Phi') \geq \frac 1 4 \phi] > \frac 1 4$$
 {: .prompt-warning}
 
 ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2020.46.58.png) ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2020.48.10.png) ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2020.48.29.png)
+
 ![shutup](/assets/img/ScreenShot%202024-01-08%20at%2020.48.40.png)

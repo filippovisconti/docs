@@ -256,7 +256,7 @@ Construct **distance** matrix **from adjacency** matrix by **replacing** all **o
 What is **work** and **depth** of transitive closure?
 
 - Repeated squaring!
-- $W = O(n^3\log n)$ $D = O(\log_2n)$
+- $W = O(n^3\log n)$ $D = O(\log^2n)$
   - $\lceil \log_2 n\rceil$ multiplications (think $A^4 = {A^2}^2$ )
 
 ---
@@ -269,6 +269,6 @@ How to **get** to **connected components** from a **transitive** **closure** mat
 
 Overall **work** and **depth**?
 
-- $W = O(n^3\log n)$, $D = O(\log_2n)$
+- $W = O(n^3\log n)$, $D = O(\log^2n)$
 
 ![shutup](/assets/img/ScreenShot%202024-01-12%20at%2017.22.33.png)
