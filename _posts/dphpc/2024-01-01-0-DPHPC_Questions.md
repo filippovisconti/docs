@@ -7,37 +7,262 @@ math: true
 
 # Questions
 
-## Implement `MPI_Barrier(MPI_Comm comm)`
+## MPI Implementations
+
+### Implement a function that passes a message in a ring, using two-sided and one-sided communication
+
+```c
+int dual_sided(int argc, char **argv) {
+
+    MPI_Init(&argc, &argv);
+
+    int myrank, size;
+    MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    int tag = 0;
+
+    // pass message in a ring and print it
+
+    int message;
+    int next = (myrank + 1) % size;
+    int prev = (myrank + size - 1) % size;
+
+    if (myrank == 0) {
+        message = 42;
+
+        MPI_Send(&message, 1, MPI_INT, next, tag, MPI_COMM_WORLD);
+        MPI_Recv(&message, 1, MPI_INT, prev, tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+        printf("Process %d received message %d from process %d\n", myrank, message, prev);
+    } else {
+        MPI_Recv(&message, 1, MPI_INT, prev, tag, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+        printf("Process %d received message %d from process %d\n", myrank, message, prev);
+
+        message++;
+        MPI_Send(&message, 1, MPI_INT, next, tag, MPI_COMM_WORLD);
+    }
+
+    MPI_Finalize();
+
+    return 0;
+}
+
+int one_sided(int argc, char **argv) {
+    MPI_Init(&argc, &argv);
+    
+    int myrank, size;
+    MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    MPI_Win win;
+
+    // pass message in a ring and print it
+
+    int message = 0;
+    int next    = (myrank + 1) % size;
+    int prev    = (myrank + size - 1) % size;
+
+    MPI_Alloc_mem(sizeof(int), MPI_INFO_NULL, &message);
+
+    MPI_Win_create(&message, sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &win);
+
+    MPI_Win_fence(0, win);
+    if (myrank == 0) {
+        message = 42;
+        MPI_Put(&message, 1, MPI_INT, next, 0, 1, MPI_INT, win);
+    }
+
+    MPI_Win_fence(0, win);
+
+    for (int current = 1; current < size - 1; current++) {
+        if (myrank == current) {
+            MPI_Get(&message, 1, MPI_INT, prev, 0, 1, MPI_INT, win);
+            printf("Process %d received message %d from process %d\n", myrank, message, prev);
+
+            message++;
+
+            MPI_Put(&message, 1, MPI_INT, next, 0, 1, MPI_INT, win);
+        }
+        MPI_Win_fence(0, win);
+    }
+
+    if (myrank == (size - 1)) {
+        MPI_Get(&message, 1, MPI_INT, prev, 0, 1, MPI_INT, win);
+        printf("Process %d received message %d from process %d\n", myrank, message, prev);
+    }
+
+    MPI_Win_fence(0, win);
+
+    MPI_Win_free(&win);
+
+    MPI_Finalize();
+    return 0;
+}
+```
+
+### Implement `MPI_Barrier(MPI_Comm comm)`
 
 It blocks all processes calling it, until all processes in `comm` have called this function. The efficiency of your implementation is not important for this task, only correctness.
 
 ```c
 void MPI_Barrier(MPI_Comm comm){
- int buf, rank, size;
+    int buf, rank, size;
 
- MPI_Comm_rank(comm, &rank);
- MPI_Comm_size(comm, &size);
- int tag = 42;
- if (rank == 0){
+    MPI_Comm_rank(comm, &rank);
+    MPI_Comm_size(comm, &size);
+    int tag = 42;
+    if (rank == 0){
 
-  for(int rank = 1; rank < size; rank++)
-   MPI_Recv(&buf, 1, MPI_INT, i, tag, comm, MPI_STATUS_IGNORE);
+    for(int rank = 1; rank < size; rank++)
+        MPI_Recv(&buf, 1, MPI_INT, i, tag, comm, MPI_STATUS_IGNORE);
 
+    for(int rank = 1; rank < size; rank++)
+        MPI_Send(&buf, 1, MPI_INT, i, tag, comm);
 
-  for(int rank = 1; rank < size; rank++)
-   MPI_Send(&buf, 1, MPI_INT, i, tag, comm);
- } else {
- buf = 99;
- MPI_Send(&buf, 1, MPI_INT, 0, tag, comm);
- MPI_Recv(&buf, 1, MPI_INT, 0, tag, comm, MPI_STATUS_IGNORE);
-
- }
+    } else {
+        buf = 99;
+        MPI_Send(&buf, 1, MPI_INT, 0, tag, comm);
+        MPI_Recv(&buf, 1, MPI_INT, 0, tag, comm, MPI_STATUS_IGNORE);
+    }
 }
+```
 
-int main(char* argv[], int argc){
- MPI_init(&argv, &argc);
- MPI_Barrier(MPI_COMM_WORLD)
- MPI_Finalize();
+### Implement `MPI_Bcast`
+
+```c
+int my_Bcast(void *buffer, int count, MPI_Datatype datatype, int root, MPI_Comm comm) {
+
+    int rank, size;
+    MPI_Comm_rank(comm, &rank);
+    MPI_Comm_size(comm, &size);
+    
+    int type_size = 0;
+    MPI_Type_size(datatype, &type_size); 
+    if (type_size == 0) exit(1);
+   
+    if (rank == root) 
+        for (int i = 0; i < size; i++) {
+            if (i == root) continue;
+            MPI_Send(buffer, count, datatype, i, 0, comm);
+
+    } else 
+        MPI_Recv(buffer, count, datatype, root, 0, comm, MPI_STATUS_IGNORE);
+    
+    return 0;
+}
+```
+
+### Implement `MPI_Scatter`
+
+```c
+int my_Scatter(const void *sendbuf, int sendcount, MPI_Datatype sendtype, 
+                     void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+                     int root, MPI_Comm comm) {
+
+    int rank, size;
+    MPI_Comm_rank(comm, &rank);
+    MPI_Comm_size(comm, &size);
+
+    int type_size = 0;
+    MPI_Type_size(sendtype, &type_size);
+    if (type_size == 0) exit(1);
+
+    if (rank == root) 
+        for (int i = 0; i < size; i++) {
+            if (i == root) continue;
+            MPI_Send(sendbuf + type_size * sendcount * i, sendcount, sendtype, 
+                     i, 0, comm);
+        }
+    else 
+        MPI_Recv(recvbuf, recvcount, recvtype, root, 0, comm, MPI_STATUS_IGNORE);
+    
+    return 0;
+}
+```
+
+### Implement `MPI_Gather`
+
+```c
+int my_Gather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, 
+                    void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+                    int root, MPI_Comm comm) {
+
+    int rank, size;
+    MPI_Comm_rank(comm, &rank);
+    MPI_Comm_size(comm, &size);
+
+    int type_size = 0;
+    MPI_Type_size(recvtype, &type_size);
+    if (type_size == 0) exit(1);
+
+    if (rank == root) 
+        for (int i = 0; i < size; i++) {
+            if (i == root) continue;
+            MPI_Recv(recvbuf + i * type_size * sendcount, recvcount, recvtype, 
+                     i, 0, comm,MPI_STATUS_IGNORE);
+        }
+    else 
+        MPI_Send(sendbuf, sendcount, sendtype, root, 0, comm);
+    
+    return 0;
+}
+```
+
+### Implement `MPI_Allgather`
+
+```c
+int my_Allgather(const void *sendbuf, int sendcount, MPI_Datatype sendtype, 
+                       void *recvbuf, int recvcount, MPI_Datatype recvtype, 
+                       MPI_Comm comm) {
+    int rank = -1, size = -1;
+    MPI_Comm_rank(comm, &rank);
+    MPI_Comm_size(comm, &size);
+    if (rank == -1 || size == -1) exit(1);
+    int root_rank = 0;
+
+    if (rank == root_rank) 
+        my_Gather(   NULL, 1, MPI_INT, recvbuf, size, MPI_INT, root_rank, comm);
+    else 
+        my_Gather(sendbuf, 1, MPI_INT,    NULL, size, MPI_INT, root_rank, comm);
+    
+
+    my_Bcast(recvbuf, size, MPI_INT, root_rank, comm);
+
+    return 0;
+}
+```
+
+### Implement `MPI_Alltoall`
+
+```c
+int my_Alltoall(const void *buffer_send, int count_send, MPI_Datatype datatype_send,
+                      void *buffer_recv, int count_recv, MPI_Datatype datatype_recv, 
+                      MPI_Comm communicator) {
+
+    int rank = -1, size = -1;
+    MPI_Comm_rank(communicator, &rank);
+    MPI_Comm_size(communicator, &size);
+
+    if (rank == -1 || size == -1) exit(1);
+    int type_size = 0;
+    MPI_Type_size(datatype_send, &type_size);
+    
+    MPI_Request request;
+
+    for (int i = 0; i < size; i++) {
+        if (i == rank) continue;
+        MPI_Isend(buffer_send + i * type_size * count_send, count_send, datatype_send, 
+                  i, 0, communicator, &request);
+    }
+    MPI_Barrier(communicator);
+    for (int i = 0; i < size; i++) {
+        if (i == rank) ((int *)buffer_recv)[i] = ((int *)buffer_send)[i*count_recv];
+        MPI_Irecv(buffer_recv + i * type_size * count_recv, count_recv, datatype_recv, 
+                  i, 0, communicator, &request);
+    }
+    return 0;
 }
 ```
 
