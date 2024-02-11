@@ -175,7 +175,7 @@ Prefix summation as function composition is extremely powerful!
 > With prefix summation **many** *seemingly* **sequential** problems **can** be **parallelized**.
 {: .prompt-tip}
 
-Simple first example: binary adder – $𝑠 = a + 𝑏$ ($n$-bit numbers)
+Simple first example: binary adder – $s = a + 𝑏$ ($n$-bit numbers)
 
 - Starting with single-bit (full) adder for bit i ![shutup](/assets/img/ScreenShot%202024-01-12%20at%2017.06.13.png)
 

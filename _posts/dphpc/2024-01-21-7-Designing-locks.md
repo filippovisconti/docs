@@ -51,11 +51,11 @@ throughput of readers vs writers
 
 Each DQ: The maximum number of lock passings within a DQ at level i, before it is passed to another DQ at i.
 
-$$𝑇_{𝐿,i}$$
+$$T_{𝐿,i}$$
 
-> Larger $𝑇_{𝐿,i}$: more throughput at level i.
+> Larger $T_{𝐿,i}$: more throughput at level i.
 >
-> Smaller $𝑇_{𝐿,i}$: more fairness at level i.
+> Smaller $T_{𝐿,i}$: more fairness at level i.
 
 ![shutup](/assets/img/ScreenShot%202024-01-07%20at%2012.14.39.png)
 
@@ -68,7 +68,7 @@ $$𝑇_{𝐿,i}$$
 ## DISTRIBUTED COUNTER (DC) Latency of readers vs writers
 
 > DC: every kth compute node hosts a partial counter, all of which constitute the DC.
-> $$𝑘 = 𝑇_{DC}$$
+> $$k = T_{DC}$$
 
 ![shutup](/assets/img/ScreenShot%202024-01-07%20at%2012.16.36.png)
 

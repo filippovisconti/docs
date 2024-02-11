@@ -26,18 +26,22 @@ We can apply prefix aggregation/filtering either:
   - network-level gain
   - long term
 
-One can identify up to **4** **local** aggregation/filtering **strategies**:
+One can identify up to **4** **local** aggregation/filtering **strategies**.
+
+### Strong forwarding consistency
+
 ![shutup](/assets/img/ScreenShot%202024-01-03%20at%2022.56.48.png)
 
-The first 2 strategies are **simple** and preserve **strong** forwarding **consistency**.
+  The first 2 strategies are **simple** and preserve **strong** forwarding **consistency**.
 
-1. **Strong** forwarding consistency **mandates** **identical** forwarding **behaviour** for **all** packets.
-2. The **longest**-prefix lookup of **any** destination that appears in the **original** FIB **should** return the **same** next-hop **before and after** aggregation.
+**Strong** forwarding consistency **mandates** **identical** forwarding **behaviour** for **all** packets. The **longest**-prefix lookup of **any** destination that appears in the **original** FIB **should** return the **same** next-hop **before and after** aggregation.
 
 > Any **non**-routable destination by the original FIB should **not** be routable after aggregation.
 >
 > - Packets that were dropped initially will also be dropped after aggregation
 {: .prompt-tip}
+
+### Weak forwarding consistency
 
 ![shutup](/assets/img/ScreenShot%202024-01-03%20at%2022.57.04.png)
 
@@ -57,31 +61,24 @@ ORTC **relies** upon **subnetting** and **supernetting** applied to a **binary**
 
 ORTC performs $3$ consecutive tree traversals, each with a distinct goal.
 
-| Pass    | goal             | tree traversal                 |
-| ------- | ---------------- | ------------------------------ |
-| pass #1 | normalization    | pre-order, from the root down  |
-| pass #2 | next-hop ranking | post-order, from the leaves up |
-| pass #3 | prefix filtering | pre-order, from the root down  |
+|    | goal             | tree traversal                 |Image|
+| -- | ---------------- | ------------------------------ |-|
+| 1. | normalization    | pre-order, <br> from the root down  |![shutup](/assets/img/ScreenShot%202024-01-03%20at%2023.07.38.png)|
+| 2. | next-hop ranking | post-order,<br> from the leaves up |![shutup](/assets/img/ScreenShot%202024-01-03%20at%2023.12.12.png)|
+| 3. | prefix filtering | pre-order,<br> from the root down  |![shutup](/assets/img/ScreenShot%202024-01-03%20at%2023.12.34.png)|
 
 The **first** pass **normalizes** the tree by **fully** expanding it, ensuring **each** node has **either** **$0$** or **$2$** children.
 
-![shutup](/assets/img/ScreenShot%202024-01-03%20at%2023.07.38.png){: width="50%"}
-
-The second pass calculates the most common next-hops from the bottom up, by merging them according to the following logic.
+The **second** pass **calculates** the **most common next-hops** from the **bottom up**, by merging them according to the following logic.
+Namely, return the common elements if any, otherwise return the union.
 
 ![shutup](/assets/img/ScreenShot%202024-01-03%20at%2023.08.26.png)
 
-Namely, return the common elements if any, otherwise return the union.
-
-![shutup](/assets/img/ScreenShot%202024-01-03%20at%2023.12.12.png){: width="50%"}
-
-The third pass moves down the tree, selecting next-hops and eliminating redundant routes.
-![shutup](/assets/img/ScreenShot%202024-01-03%20at%2023.12.34.png){: width="50%"}
-
-> ORTC is **optimal** but comes with **tradeoffs** when it comes to updating the compressed FIB.
-{: .prompt-tip}
+The **third** pass moves down the tree, selecting next-hops and **eliminating redundant routes**.
 
 ---
+
+ORTC is **optimal** but comes with **tradeoffs** when it comes to updating the compressed FIB.
 
 > ORTC does **not** support **update** operations to the **aggregated** FIB. The aggregated FIB **must** be **recomputed** upon each **update**.
 {: .prompt-danger}

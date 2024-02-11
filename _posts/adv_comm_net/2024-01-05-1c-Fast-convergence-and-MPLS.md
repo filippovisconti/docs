@@ -68,7 +68,7 @@ Yep… especially in large networks
 
 Possible mechanisms:
 
-1. Rely on **physical**/link layer su**p**port
+1. Rely on **physical**/link layer **support**
 2. Rely on "hello"/**beacons**
 
 #### Rely on physical/link layer support

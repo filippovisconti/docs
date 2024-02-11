@@ -103,37 +103,23 @@ Which inputs should we consider in env? ⤷ Use the counter examples from the ve
 
 ![shutup](/assets/img/Pasted%20image%2020240115154550.png)
 
-The configuration satisfies the specification if $C_{cust} > C_{prov}$
-![shutup](/assets/img/Pasted%20image%2020240115154617.png){: width="50%"}
+|The configuration satisfies the specification if $C_{cust} > C_{prov}$|![shutup](/assets/img/Pasted%20image%2020240115154617.png)|
+|Let’s pick parameters $C_{cust}, C_{prov}$ "randomly".|![shutup](/assets/img/Pasted%20image%2020240115154641.png)|
+|The verifier finds a counter example x1:|![shutup](/assets/img/Pasted%20image%2020240115154656.png)|
+|x1 "invalidates" the parameter space where $C_{cust} < C_{prov}$|![shutup](/assets/img/Pasted%20image%2020240115154720.png)|
+|The synthesizer then picks parameters that satisfy x1|![shutup](/assets/img/Pasted%20image%2020240115154755.png)|
+|The synthesizer then finds a counter example x2|![shutup](/assets/img/Pasted%20image%2020240115154815.png)|
+|x2 "invalidates" the parameter space where $C_{cust} = C_{prov}$|
+|The synthesizer picks parameters that satisfy x1 and x2.|![shutup](/assets/img/Pasted%20image%2020240115154855.png)|
 
-Let’s pick parameters $C_{cust}, C_{prov}$ "randomly".
-![shutup](/assets/img/Pasted%20image%2020240115154641.png){: width="50%"}
-
-The verifier finds a counter example x1:
-![shutup](/assets/img/Pasted%20image%2020240115154656.png){: width="50%"}
-x1 "invalidates" the parameter space where $C_{cust} < C_{prov}$
-![shutup](/assets/img/Pasted%20image%2020240115154720.png){: width="50%"}
-
-The synthesizer then picks parameters that satisfy x1
-![shutup](/assets/img/Pasted%20image%2020240115154755.png){: width="50%"}
-
-The synthesizer then finds a counter example x2
-![shutup](/assets/img/Pasted%20image%2020240115154815.png){: width="50%"}
-
-x2 "invalidates" the parameter space where $C_{cust} = C_{prov}$
-
-The synthesizer picks parameters that satisfy x1 and x2.
-
-![shutup](/assets/img/Pasted%20image%2020240115154855.png){: width="50%"}
+### How can we implement the network behavior in SMT?
 
 We describe the network behavior using equations.
 
-![shutup](/assets/img/Pasted%20image%2020240115165559.png){: width="50%"}
-![shutup](/assets/img/Pasted%20image%2020240115165613.png){: width="50%"}
-![shutup](/assets/img/Pasted%20image%2020240115165725.png){: width="50%"}
-![shutup](/assets/img/Pasted%20image%2020240115165746.png){: width="50%"}
-![shutup](/assets/img/Pasted%20image%2020240115165802.png){: width="50%"}
-![shutup](/assets/img/Pasted%20image%2020240115165911.png){: width="50%"}
+|![shutup](/assets/img/Pasted%20image%2020240115165559.png)|![shutup](/assets/img/Pasted%20image%2020240115165613.png)|
+|![shutup](/assets/img/Pasted%20image%2020240115165725.png)||
+|![shutup](/assets/img/Pasted%20image%2020240115165802.png)|![shutup](/assets/img/Pasted%20image%2020240115165746.png)|
+|![shutup](/assets/img/Pasted%20image%2020240115165911.png)||
 
 ### How can we implement the synthesis block in SMT?
 
@@ -143,8 +129,7 @@ Goal: $$\text{find } C \text{ such that } ∀ X, Y: [X∈ env ∧ Net(X,Y,C)] �
 
 We only iterate over the environments from our counter examples!
 
-![shutup](/assets/img/Pasted%20image%2020240115172301.png){: width="50%"}
-![shutup](/assets/img/Pasted%20image%2020240115172327.png){: width="50%"}
+|![shutup](/assets/img/Pasted%20image%2020240115172301.png)|![shutup](/assets/img/Pasted%20image%2020240115172327.png)|
 
 Configurations can be **arbitrarily** complex. What configuration parameters to consider? We need to decide which parameters to include!
 
@@ -154,9 +139,11 @@ Configurations can be **arbitrarily** complex. What configuration parameters to 
   - ⇒ configuration too **complex** for humans to understand.
   - ⇒ configuration can **only** cover the counter examples as corner cases.
 
-> - Start with a small configuration space C.
-> - Synthesize configurations from the space C.
-> - If no configuration within C "works", increase C.
+> **Idea**:
+>
+> - **Start** with a **small** configuration space C.
+> - **Synthesize** configurations **from** the space **C**.
+> - **If** **no** **configuration** within C "**works**", **increase** **C**.
 {: .prompt-tip}
 
 ![shutup](/assets/img/Pasted%20image%2020240115172551.png)
@@ -166,18 +153,19 @@ Configurations can be **arbitrarily** complex. What configuration parameters to 
 We have four observations:
 
 1. $C_i$ gets smaller in each step,
-   1. i.e., $$C_{i+1}\subset C_i$$
+    - i.e., $$C_{i+1}\subset C_i$$
 2. $C_i$ always includes all configurations,
-   1. i.e.,$$C_{sol} \subseteq C_i$$
+    - i.e.,$$C_{sol} \subseteq C_i$$
 3. We synthesize configurations from $C_i$,
-   1. i.e.,$$C_{i+1}\in C_i$$
+    - i.e.,$$C_{i+1}\in C_i$$
 4. $C_i$ can be infinite.
 
 > In **theory**, CEGIS might run **forever**. In **practice**, CEGIS is **efficient**.
+{: .prompt-warning}
 
 ## Applying synthesis to different networking tasks
 
-All it takes is to **view** the **problem** from a **different** **perspective**.
+All it takes is to **view** the **problem** **from** a **different** **perspective**.
 
 ### Configuration repair
 
@@ -188,14 +176,13 @@ Configuration **repair** is just **synthesizing** a configuration that **maximiz
 
 Use **Syntax** **Guided** Synthesis:
 
-1. Start with the configuration space C to only contain the old configuration.
-2. Increase the configuration space C slightly when the synthesis step fails
+1. **Start with** the configuration space C to **only** contain the **old configuration**.
+2. **Increase** the configuration space C slightly **when** the **synthesis** step **fails**
    - ⇒ We will synthesize a configuration that is similar to the initial configuration.
 
 ### Optimization
 
-Can we find a configuration that maximizes an optimization function?
-![shutup](/assets/img/Pasted%20image%2020240115173121.png){: width="50%"}
+|Can we find a configuration that maximizes an optimization function?|![shutup](/assets/img/Pasted%20image%2020240115173121.png)|
 
 Performance **properties** depend on **all** destinations! But our current network **model** only considers a **single** destination at a time.
 
@@ -204,7 +191,7 @@ Performance **properties** depend on **all** destinations! But our current netwo
 
 Some synthesis problems in Networking are **better** **suited** **for** tools like **Linear** **Programming** than for SMT.
 
-Let’s assume a **central** controller to configure the FIBs. A **single** entity **computes** the network-wide **forwarding** **state**, and then **configures** the actu**a**l routing **tables** accordingly.
+Let’s assume a **central** controller to configure the FIBs. A **single** entity **computes** the network-wide **forwarding** **state**, and then **configures** the **actual** routing **tables** accordingly.
 
 - We are **given** the current traffic **demand** for each source-destination **pair**.
 - Allocate network **paths** such that **maximum** link **utilization** is **minimized**.
@@ -213,16 +200,14 @@ Let’s assume a **central** controller to configure the FIBs. A **single** enti
 
 ### Configuration is not the only thing we can synthesize
 
-Can we understand what the network does?
-![shutup](/assets/img/Pasted%20image%2020240115173254.png){: width="50%"}
+|Can we understand what the network does?|![shutup](/assets/img/Pasted%20image%2020240115173254.png)|
 
 Find the **largest** specification that a **configuration** **satisfies** in a given **set** of **environments**.
 
 - Config2Spec finds the maximal set of specifications that are implemented by the configuration.
 - The list is too large for humans to understand what the network actually does.
 
-In **which** **environments** does the network what we **want**?
-![shutup](/assets/img/Pasted%20image%2020240115173352.png){: width="50%"}
+|In **which** **environments** does the network what we **want**?|![shutup](/assets/img/Pasted%20image%2020240115173352.png)|
 
 Find the set of environments in which the network satisfies a given specification.
 
@@ -234,7 +219,7 @@ Find the set of environments in which the network satisfies a given specificatio
 A **reconfiguration** triggers a **convergence** process. Each **intermediate** state must **satisfy** the **specification**.
 
 - Idea: synthesize intermediate configuration
- ![shutup](/assets/img/Pasted%20image%2020240115173519.png){: width="50%"}
+ ![shutup](/assets/img/Pasted%20image%2020240115173519.png)
 
 ### Research projects
 

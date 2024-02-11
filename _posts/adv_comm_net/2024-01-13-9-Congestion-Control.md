@@ -5,57 +5,49 @@ categories: adv-comm-net lecture-notes
 math: true
 ---
 
-I want you to question the assumptions behind TCP. math: true
 
-1. Assumption: We can find the optimal sending rate over several RTTs.
-2. Doubt: In the modern internet, we often send only small requests.
-3. Question: Do we even have enough time to ramp up?
+|**Assumption**| We can find the optimal sending rate over several RTTs.|
+|**Doubt**| In the modern internet, we often send only small requests.|
+|**Question**| Do we even have enough time to ramp up?|
 
 Oscillations in TCP occur over the course of many RTTs. How big do our requests need to be for that to be realistic? On a 1Gbit/s link with 10ms RTT, we could send up to 1.25MB in a single RTT.
 
 ![shutup](/assets/img/Pasted%20image%2020240116211929.png){: width="50%"}
 
-Study of a campus network in 2021 90% of flows are smaller than 1kB.
+> Study of a campus network in 2021 90% of flows are smaller than 1 kB.
+{: .prompt-warning}
+
+|**Assumption**| **Fairness is guaranteed** on average for **long** running flows.|
+|**Doubt**| In the modern internet, we send **many small requests**.|
+|**Question**| Do we **even** have **enough time to be fair**? Often, we don’t!|
 
 ---
 
-1. Assumption: **Fairness is guaranteed** on average for **long** running flows.
-2. Doubt: In the modern internet, we send **many small requests**.
-3. Question: Do we **even** have **enough time to be fair**? Often, we don’t!
-
 ## Congestion Control Design
-
-- **Observation** Space
-  - What do we measure?
-- **Control** Space
-  - How can we act?
-- Case Study
-  - BBR
 
 **Observations** are intrinsically **linked** to our **model** of the network. The model also **determines** our **actions**, but more on that later.
 
-**Observations** let us **estimate** the model **state**
+**Observations** let us **estimate** the model **state**.
 
 > **not observable** → difficult to model without making assumptions
 >
 > **not modelled** → no point in observing
+{: .prompt-danger}
 
-The TCP network model is simple and consists of 3 states. We observe packet loss via duplicate ACKs and timeouts.
-![shutup](/assets/img/Pasted%20image%2020240116212343.png){: width="50%"}
+|The TCP network model is simple and consists of 3 states. <br> We observe packet loss via duplicate ACKs and timeouts.|![shutup](/assets/img/Pasted%20image%2020240116212343.png)|
+|TCP RENO/CUBIC are **relatively model-free algorithms**:| ![shutup](/assets/img/Pasted%20image%2020240116212708.png)|
+|TCP RENO and CUBIC **misinterpret signals**: **all loss** <br> is **attributed** to **congestion**, even if it is just random.|![shutup](/assets/img/Pasted%20image%2020240116212730.png)|
+|TCP RENO and CUBIC **miss signals**: What about **delay**?| **Only** **full** **queues drop packets** (mostly) <br> $\rightarrow$ TCP needs to fill queues to work!|
 
-TCP RENO/CUBIC are **relatively model-free algorithms**: ![shutup](/assets/img/Pasted%20image%2020240116212708.png)
+We have a two-fold problem:
 
-TCP RENO and CUBIC **misinterpret signals**: **all loss** is **attributed** to **congestion**, even if it is just random.
-![shutup](/assets/img/Pasted%20image%2020240116212730.png){: width="50%"}
+1. A **full** queue **delays** **congestion** **signals**.
+2. A **full** queue **increases** **RTT**.
 
-TCP RENO and CUBIC **miss signals**: What about **delay**? Only **full** queues drop packets (mostly) $\rightarrow$ TCP needs to fill queues to work!
+Rule of thumb around 2000: buffer 250ms of incoming traffic.
 
-We have a two-fold problem.
-
-1. Delay problem #1: A **full** queue **delays** **congestion** **signals**.
-2. Delay problem #2: A **full** queue **increases** **RTT**.
-
-Rule of thumb around 2000 [source] "buffer 250ms of incoming traffic". Packets spend 2.5s in the buffer!
+> Packets spend 2.5s in the buffer!
+{: .prompt-warning}
 
 This is a **problem** for
 
@@ -94,7 +86,7 @@ Fundamentally, there are three things to observe:
    - **difficult** to model, as there are **many** possible causes for delay (network? receiver? ...)
 1. **Packets** **in-flight**
    - **not** fully observable,
-   - **difficult** to model, we only know our own packets. What are other applications going to sent?
+   - **difficult** to model, we only know our own packets. What are other applications going to send?
 
 ### On your device?
 
@@ -171,7 +163,7 @@ If **multiple** bursts **coincide**, we may **overload** **queues**!
 - **Available** for **both** TCP and QUIC.
 - Current version (2023): BBRv3
 - BBR builds a **model** of the network.
-- BBR is a **great** **example** for **different** **observation** and **control**, as we’ll discuss in the following. 
+- BBR is a **great** **example** for **different** **observation** and **control**, as we’ll discuss in the following.
 ![shutup](/assets/img/Pasted%20image%2020240116214413.png){: width="40%"}
 
 As the name implies, **BBR** **models** the network by considering the **RTT** and **bottleneck** **bandwidth**.
@@ -222,7 +214,7 @@ BBR is an **algorithm** that **models** the **bottleneck** **queue**, measuring 
 
 Applications on the Internet have many different needs. A **one-size-fits-all transport cannot be optimal**.
 
-Compare a download that only needs throughput with a VoIP call that mostly cares about latency! 
+Compare a download that only needs throughput with a VoIP call that mostly cares about latency!
 Some applications build their own control logic on top of congestion control.
 ![shutup](/assets/img/Pasted%20image%2020240116215645.png){: width="50%"}
 
@@ -235,5 +227,5 @@ Some applications build their own control logic on top of congestion control.
 
 What's going on? Many applications not only communicate, but also wait/compute.
 
-> A bit of **unfairness** can **help** to **un-synchronize** them. 
+> A bit of **unfairness** can **help** to **un-synchronize** them.
 > ![shutup](/assets/img/Pasted%20image%2020240116215824.png)

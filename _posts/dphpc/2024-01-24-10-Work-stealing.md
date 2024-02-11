@@ -63,7 +63,7 @@ Given a program $P$, assume cold (empty) cache
 ![shutup](/assets/img/ScreenShot%202024-01-10%20at%2019.44.02.png){: w="50%"}
 ![shutup](/assets/img/ScreenShot%202024-01-11%20at%2011.51.58.png){: w="50%"}
 
-### Roofline model
+## Roofline model
 
 ![shutup](/assets/img/ScreenShot%202024-01-11%20at%2011.52.40.png){: w="50%"}
 
@@ -75,7 +75,7 @@ Different optimizations can be represented as performance ceilings ⇒ you canno
 Assume CPU performance $𝜋$ increases by a factor of $a$ (i.e., $a𝜋$), how to rebalance?
 ![shutup](/assets/img/ScreenShot%202024-01-10%20at%2019.43.05.png){: w="70%"}
 
-#### Algorithm/program model
+### Algorithm/program model
 
 Work: $W$ \[number of ops\]
 
@@ -86,7 +86,7 @@ $$\frac \pi \beta = \frac W {Q_m}=I$$
 How much do we need to increase the cache size, $𝛾$, to balance the increase in CPU performance?
 ![shutup](/assets/img/ScreenShot%202024-01-10%20at%2019.52.16.png){: w="70%"}
 
-### Alpha-Beta model
+## Alpha-Beta model
 
 ![shutup](/assets/img/ScreenShot%202024-01-10%20at%2019.52.48.png){: w="50%"}
 
@@ -94,15 +94,15 @@ Time taken to transfer data of size $n$:
 
 $$T(n) = \frac n \beta+\alpha$$
 
-In some literature, $𝛽$ describes inverse bandwidth, and the cost of transferring data grows linearly with $n$.
+In some literature, $\beta $ describes inverse bandwidth, and the cost of transferring data grows linearly with $n$.
 
-### Balance Principles II
+## Balance Principles II
 
 Objective: More detailed balance principles for multicores, assessment of hardware trends.
 ![shutup](/assets/img/ScreenShot%202024-01-11%20at%2015.50.33.png){: w="50%"}
 ![shutup](/assets/img/ScreenShot%202024-01-11%20at%2015.50.47.png){: w="50%"}
 
-#### Derivation
+### Derivation
 
 Estimate $T_{mem}$ by dividing DAG into levels.
 

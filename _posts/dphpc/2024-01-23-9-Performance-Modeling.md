@@ -13,9 +13,9 @@ Formally:
 
 > ***Amdahl’s law***:
 >
-> - A program runs in time $𝑇_1$ on one processor.
+> - A program runs in time $T_1$ on one processor.
 > - A fraction 𝑓, $0 ≤ 𝑓 ≤ 1$, of it is sequential.
-> - Let $𝑇_p$ be the runtime on p processors, then
+> - Let $T_p$ be the runtime on p processors, then
 > $$ T_p \geq fT_1 + \frac {(1-f)T_1}{p}$$
 >
 > |Speedup| $$S_p= \frac {T_1} {T_p} \leq \frac 1 {\frac {1-f}{p} +f}$$|
@@ -147,8 +147,8 @@ $$ T_p \geq \max (\frac W P, D)$$
 
 Proof:
 
-- Total number of instructions = $W ≤ P ⋅ 𝑇_P$
-- Each step can execute $≤ 1$ instruction on a directed path of the EDAG → $ ≤ 𝑇_P$
+- Total number of instructions = $W ≤ P ⋅ T_P$
+- Each step can execute $≤ 1$ instruction on a directed path of the EDAG → $ ≤ T_P$
 
 ### Greedy Scheduler
 
@@ -177,7 +177,7 @@ $$T_p \leq \frac {W+(P-1)D} P$$
 
 #### Greedy Scheduler: Sketch
 
-Maintain task pile of unfinished tasks, each ready or not. Initial root task in task pile with all processors idle.
+**Maintain** task **pile** of **unfinished tasks**, each ready or not. Initial **root task in task pile with all processors idle**.
 
 > Pile needs concurrency-control / locking!
 
@@ -187,16 +187,16 @@ At each step, processors are idle or have a task t to work on:
 If idle:
  Get an (arbitrary) ready task from pile
 
-If working on task 𝒕:
- Case 0
-  t has another instruction to execute → execute it
- Case 1
-  t spawns task 𝑠 → return t to pile, continue with 𝑠
- Case 2
-  t stalls → return t to pile and idle
- Case 3
-  t dies (finishes) → continue with parent p or idle
-  (if p has living children)
+If working on task t:
+  Case 0
+    t has another instruction to execute → execute it
+  Case 1
+    t spawns task s → return t to pile, continue with s
+  Case 2
+    t stalls → return t to pile and idle
+  Case 3
+    t dies (finishes) → continue with parent p or idle
+    (if p has living children)
 ```
 
 ### Work-stealing scheduler
@@ -251,6 +251,10 @@ At each time-step, a processor either executes a task or attempts a steal.
 > The goal of the proof is to show that the expected number of steal attempt is
 >
 > $$\mathbb{E} [S] = O(PD) \longrightarrow \mathbb{E} [T_P] = \mathbb{E} [\frac {(W+S)}P] = O(\frac W P + D)$$
+>
+> ---
+>
+> Remember: Brent’s lemma for a greedy scheduler $$T_P \leq \frac {W+(P-1)D} P$$
 {:.prompt-danger}
 
 The **depth** is an **upper bound** on the **number of timesteps** where some processor is idle (similar to Brent’s lemma), so that the **total number of idling work cycles is $O(PD)$**.
@@ -334,7 +338,7 @@ independent. What is the total weight of the non-empty bins?
 
 > **Lemma 5**
 >
-> Let $W=\sum w_i$ and let 𝑋 be the total weight of the non-empty bins. Then for any $0 < 𝛽 < 1$,
+> Let $W=\sum w_i$ and let 𝑋 be the total weight of the non-empty bins. Then for any $0 < \beta  < 1$,
 > $$Pr[X\geq \beta W] \geq 1- \frac 1 {(1-\beta)e}$$
 {: .prompt-warning}
 

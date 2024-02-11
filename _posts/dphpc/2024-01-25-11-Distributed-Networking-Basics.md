@@ -5,44 +5,46 @@ categories: dphpc lecture-notes
 math: true
 ---
 
+## Bandwidth vs. Latency
+
 Transfer time
 
-$$𝑇(𝑠) = 𝛼 + 𝛽𝑠$$
+$$T(s) = \alpha  + \beta s$$
 
-- $𝛼$ = startup time (latency)
-- $𝛽$ = cost per byte (bandwidth = $1/𝛽$)
+- $\alpha $ = startup time (latency)
+- $\beta $ = cost per byte (bandwidth = $1/\beta $)
 
 Effective bandwidth of a transfer:
 
-- $E(𝑠) = 𝑠 / 𝑇(𝑠)$
+- $E(s) = s / T(s)$
 
-As $s$ increases, the effective bandwidth approaches $1/𝛽$ asymptotically
+As $s$ increases, the effective bandwidth approaches $1/\beta $ asymptotically
 
 - Convergence rate depends on α
-- $𝑠_{1/2} = 𝛼/𝛽$
+- $s_{1/2} = \alpha /\beta $
 
 Assuming **no** pipelining (new messages can only be **issued** from a process **after all arrived**)
 
-- **Two** messages of size 𝑠 between two processes cost $2(𝛼 + 𝑠𝛽)$
+- **Two** messages of size s between two processes cost $2(\alpha  + s\beta )$
 - Somewhat **unrealistic** (networks pipeline) but simple for now – we will lift this later!
 
-## Bandwidth vs. Latency
+$s_{1/2} = \alpha /\beta $ is often used to **distinguish** **bandwidth**- and **latency**-**bound** **messages**
 
-$𝑠_{1/2} = 𝛼/𝛽$ is often used to **distinguish** **bandwidth**- and **latency**-**bound** **messages**
-
-- $𝑠_{1/2} $ is in the order of kilobytes on real systems
+- $s_{1/2} $ is in the order of kilobytes on real systems
 ![shutup](/assets/img/ScreenShot%202024-01-11%20at%2017.19.49.png){: w="50%"}
 
-### Example: simplest linear broadcast
+### Examples
+
+#### Simplest linear broadcast
 
 - One process has a data item to be distributed to all processes
 
 > **Linearly broadcasting** $s$ bytes among $P$ processes:
 >
-> $$ 𝑇 (𝑠) = (P − 1) ⋅ (𝛼 + 𝛽𝑠) = O(P)$$
+> $$ T (s) = (P − 1) ⋅ (\alpha  + \beta s) = O(P)$$
 {: .prompt-tip}
 
-### k-ary Tree Broadcast
+#### k-ary Tree Broadcast
 
 **Origin** process is the **root** of the tree, **passes** messages to $k$ neighbors which pass them on
 
@@ -50,15 +52,15 @@ $𝑠_{1/2} = 𝛼/𝛽$ is often used to **distinguish** **bandwidth**- and **l
 
 What is the **broadcast time** in the simple latency/bandwidth model?
 
-- $𝑇 (𝑠) ≈ \log_𝑘P ⋅ 𝑘(𝛼 + 𝛽𝑠)$ (for fixed k)
+- $T (s) ≈ \log_kP ⋅ k(\alpha  + \beta s)$ (for fixed k)
 
-#### What is the optimal $k$?
+##### What is the optimal $k$?
 
 $$0 = \frac {k \ln P} {\ln k} \frac {d} {dk} = \frac {\ln P \ln k - \ln P} {\ln^2 k} \rightarrow k = e \approx 2.71 $$
 
 > Independent of $P, \alpha, \beta, s$?
 
-### Faster Trees?
+#### Faster Trees?
 
 Can we broadcast **faster** than in a **ternary** tree?
 
@@ -69,7 +71,7 @@ Can we broadcast **faster** than in a **ternary** tree?
 
 What about the **runtime**?
 
-- $𝑇 (𝑠) ≈ \log_𝑘P ⋅ 𝑘(𝛼 + 𝛽𝑠)=O(\log P)$
+- $T (s) ≈ \log_kP ⋅ k(\alpha  + \beta s)=O(\log P)$
 
 What is the optimal $k$ here?
 

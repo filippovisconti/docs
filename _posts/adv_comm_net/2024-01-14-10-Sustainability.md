@@ -1,6 +1,0 @@
----
-tags: [Networks, Routing, Sustainability]
-title: Sustainability
-categories: adv-comm-net lecture-notes
-math: true
----
